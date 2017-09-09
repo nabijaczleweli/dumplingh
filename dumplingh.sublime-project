@@ -3,13 +3,19 @@
 	[
 		{
 			"working_dir": "$project_path",
-			"shell_cmd": "cargo build && cargo test",
-			"name": "Build dumplingh"
+			"shell_cmd": "cargo build --color always && cargo test --color always",
+			"name": "Build dumplingh",
+
+			"target": "ansi_color_build",
+			"syntax": "Packages/ANSIescape/ANSI.tmLanguage"
 		},
 		{
 			"working_dir": "$project_path",
-			"cmd": "cargo doc",
-			"name": "Document dumplingh"
+			"cmd": "cargo doc --color always",
+			"name": "Document dumplingh",
+
+			"target": "ansi_color_build",
+			"syntax": "Packages/ANSIescape/ANSI.tmLanguage"
 		}
 	],
 	"folders":
@@ -39,5 +45,10 @@
 			"name": "Build files",
 			"path": "."
 		}
-	]
+	],
+	"settings":
+	{
+		"tab_size": 4,
+		"translate_tabs_to_spaces": true
+	}
 }

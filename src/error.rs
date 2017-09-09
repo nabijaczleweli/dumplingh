@@ -3,7 +3,7 @@ use std::io::Write;
 
 
 /// Enum representing all possible ways the application can fail.
-#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Error {
     /// An I/O error occured.
     ///
@@ -24,7 +24,7 @@ pub enum Error {
         ///
         /// Something like "URL", "datetime".
         tp: &'static str,
-        /// Where the thing that failed to parse would go, were it to parese properly.
+        /// Where the thing that failed to parse would go, were it to parse properly.
         wher: &'static str,
         /// Additional data.
         more: Option<&'static str>,
