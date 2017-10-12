@@ -11,9 +11,11 @@
 //! ```
 
 
+use clap::{self, AppSettings, Arg};
 use self::super::ops::RepoSlug;
-use clap::{AppSettings, Arg};
+use std::path::PathBuf;
 use std::str;
+use std::fs;
 
 
 /// Representation of the application's all configurable values.
@@ -21,6 +23,14 @@ use std::str;
 pub struct Options {
     /// Repository slug to export.
     pub slug: RepoSlug,
+    /// File to write issues to, if any.
+    ///
+    /// Default: `"./<slug>-issues.json"`.
+    pub out_issues: Option<(String, PathBuf)>,
+    /// File to write pull requests to, if any.
+    ///
+    /// Default: `"./<slug>-prs.json"`.
+    pub out_pull_requests: Option<(String, PathBuf)>,
 }
 
 impl Options {
@@ -29,9 +39,49 @@ impl Options {
         let matches = app_from_crate!("\n")
             .setting(AppSettings::ColoredHelp)
             .arg(Arg::from_usage("<REPO_SLUG> 'Repository slug to export'").validator(Options::slug_validator).required(true))
+            .arg(Arg::from_usage("-i --issues [ISSUES_FILE] 'File to write issues to. Default: <slug>-issues.json'")
+                .validator(|s| Options::out_file_validator(s, "Issues"))
+                .conflicts_with("no-issues"))
+            .arg(Arg::from_usage("--no-issues 'Don\\'t export issues'").conflicts_with("issues"))
+            .arg(Arg::from_usage("-p --pulls [PULLS_FILE] 'File to write pull requests to. Default: <slug>-prs.json'")
+                .validator(|s| Options::out_file_validator(s, "Pulls"))
+                .conflicts_with("no-pulls"))
+            .arg(Arg::from_usage("--no-pulls 'Don\\'t export pulls'").conflicts_with("pulls"))
+            .arg(Arg::from_usage("-f --force 'Overwrite existing files'"))
             .get_matches();
 
-        Options { slug: matches.value_of("REPO_SLUG").unwrap().parse().unwrap() }
+        let force = matches.is_present("force");
+        let slug: RepoSlug = matches.value_of("REPO_SLUG").unwrap().parse().unwrap();
+        let slug_prefix = slug.filename();
+        Options {
+            slug: slug,
+            out_issues: Options::out_file(force, &slug_prefix, matches.is_present("no-issues"), matches.value_of("issues")),
+            out_pull_requests: Options::out_file(force, &slug_prefix, matches.is_present("no-pulls"), matches.value_of("pulls")),
+        }
+    }
+
+    fn out_file(force: bool, slug_prefix: &str, no_file: bool, file_val: Option<&str>) -> Option<(String, PathBuf)> {
+        if !no_file {
+            let arg_s = file_val.map(String::from).unwrap_or_else(|| format!("./{}-issues.json", slug_prefix));
+            let mut arg = PathBuf::from(&arg_s);
+            if !force && arg.exists() {
+                clap::Error {
+                        message: format!("{} exists and --force not specified", arg_s),
+                        kind: clap::ErrorKind::ArgumentConflict,
+                        info: None,
+                    }
+                    .exit()
+            } else {
+                let fname = arg.file_name().unwrap().to_os_string();
+                arg.pop();
+                let mut arg_can = fs::canonicalize(&arg).unwrap();
+                arg_can.push(fname);
+
+                Some((arg_s, arg_can))
+            }
+        } else {
+            None
+        }
     }
 
     fn slug_validator(s: String) -> Result<(), String> {
@@ -40,6 +90,16 @@ impl Options {
             e.print_error(&mut err);
             let err = str::from_utf8(&err).unwrap();
             format!("{}; from string \"{}\"", &err[..err.len() - 2], s)
+        })
+    }
+
+    fn out_file_validator(s: String, desc: &str) -> Result<(), String> {
+        let mut p = PathBuf::from(&s);
+        p.pop();
+        fs::canonicalize(&p).map_err(|_| format!("{}'s parent directory \"{}\" nonexistant", desc, p.display())).and_then(|f| if !f.is_file() {
+            Ok(())
+        } else {
+            Err(format!("{}'s parent directory \"{}\" actually a file", desc, p.display()))
         })
     }
 }

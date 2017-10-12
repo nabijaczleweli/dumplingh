@@ -23,3 +23,13 @@ fn display() {
                    .to_string(),
                "nabijaczleweli/dumplingh");
 }
+
+#[test]
+fn filename() {
+    assert_eq!(RepoSlug {
+                       username: "nabijaczleweli".to_string(),
+                       repository: "dumplingh".to_string(),
+                   }
+                   .filename(),
+               "nabijaczleweli-dumplingh");
+}

@@ -27,6 +27,13 @@ pub struct RepoSlug {
     pub repository: String,
 }
 
+impl RepoSlug {
+    /// A representation of the slug suitable for use in a filename.
+    pub fn filename(&self) -> String {
+        format!("{}-{}", self.username, self.repository)
+    }
+}
+
 impl FromStr for RepoSlug {
     type Err = Error;
 
