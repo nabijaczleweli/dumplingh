@@ -1,6 +1,10 @@
 //! Module containing various utility functions.
 
 
+/// App name and version to use with User-Agent request header.
+pub static USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
+
+
 /// Uppercase the first character of the supplied string.
 ///
 /// Based on http://stackoverflow.com/a/38406885/2851815

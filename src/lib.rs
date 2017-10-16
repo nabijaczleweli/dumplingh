@@ -1,3 +1,6 @@
+extern crate serde_json;
+extern crate reqwest;
+extern crate serde;
 #[macro_use]
 extern crate clap;
 

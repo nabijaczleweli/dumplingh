@@ -19,7 +19,7 @@ use std::fs;
 
 
 /// Representation of the application's all configurable values.
-#[derive(Debug, Clone, Hash, PartialEq, Eq)]
+#[derive(Debug, Clone, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Options {
     /// Repository slug to export.
     pub slug: RepoSlug,
@@ -55,14 +55,14 @@ impl Options {
         let slug_prefix = slug.filename();
         Options {
             slug: slug,
-            out_issues: Options::out_file(force, &slug_prefix, matches.is_present("no-issues"), matches.value_of("issues")),
-            out_pull_requests: Options::out_file(force, &slug_prefix, matches.is_present("no-pulls"), matches.value_of("pulls")),
+            out_issues: Options::out_file(force, &slug_prefix, "issues", matches.is_present("no-issues"), matches.value_of("issues")),
+            out_pull_requests: Options::out_file(force, &slug_prefix, "pulls", matches.is_present("no-pulls"), matches.value_of("pulls")),
         }
     }
 
-    fn out_file(force: bool, slug_prefix: &str, no_file: bool, file_val: Option<&str>) -> Option<(String, PathBuf)> {
+    fn out_file(force: bool, slug_prefix: &str, arg: &str, no_file: bool, file_val: Option<&str>) -> Option<(String, PathBuf)> {
         if !no_file {
-            let arg_s = file_val.map(String::from).unwrap_or_else(|| format!("./{}-issues.json", slug_prefix));
+            let arg_s = file_val.map(String::from).unwrap_or_else(|| format!("./{}-{}.json", slug_prefix, arg));
             let mut arg = PathBuf::from(&arg_s);
             if !force && arg.exists() {
                 clap::Error {

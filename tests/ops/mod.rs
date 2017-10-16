@@ -1,1 +1,2 @@
+mod write;
 mod slug;
