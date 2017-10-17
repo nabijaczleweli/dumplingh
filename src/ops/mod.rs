@@ -1,3 +1,10 @@
+//! Main functions doing actual work.
+//!
+//! Use `str::parse::<RepoSlug>()` to validate your repository slug,
+//! `list_{pull_requests,issues}()` to download your data and
+//! `save_{to_file,data}()` to save it.
+
+
 mod network;
 mod write;
 mod slug;
