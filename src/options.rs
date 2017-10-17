@@ -43,7 +43,7 @@ impl Options {
                 .validator(|s| Options::out_file_validator(s, "Issues"))
                 .conflicts_with("no-issues"))
             .arg(Arg::from_usage("--no-issues 'Don\\'t export issues'").conflicts_with("issues"))
-            .arg(Arg::from_usage("-p --pulls [PULLS_FILE] 'File to write pull requests to. Default: <slug>-prs.json'")
+            .arg(Arg::from_usage("-p --pulls [PULLS_FILE] 'File to write pull requests to. Default: <slug>-pulls.json'")
                 .validator(|s| Options::out_file_validator(s, "Pulls"))
                 .conflicts_with("no-pulls"))
             .arg(Arg::from_usage("--no-pulls 'Don\\'t export pulls'").conflicts_with("pulls"))
