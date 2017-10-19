@@ -54,6 +54,10 @@ Exit values and possible errors:
 
     Allow for overriding <ISSUES_FILE> and <PULLS_FILE>.
 
+  -c --compact
+
+    Compact-print, rather than pretty-print the exported issues/pull requests.
+
 ## AUTHOR
 
 Written by nabijaczleweli &lt;<nabijaczleweli@gmail.com>&gt;

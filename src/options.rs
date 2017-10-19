@@ -31,6 +31,10 @@ pub struct Options {
     ///
     /// Default: `"./<slug>-prs.json"`.
     pub out_pull_requests: Option<(String, PathBuf)>,
+    /// Whether to compact-print, as opposed to pretty-print, exported JSON.
+    ///
+    /// Default: `false`.
+    pub compact: bool,
 }
 
 impl Options {
@@ -48,6 +52,7 @@ impl Options {
                 .conflicts_with("no-pulls"))
             .arg(Arg::from_usage("--no-pulls 'Don\\'t export pulls'").conflicts_with("pulls"))
             .arg(Arg::from_usage("-f --force 'Overwrite existing files'"))
+            .arg(Arg::from_usage("-c --compact 'Don't pretty-print exported JSON'"))
             .get_matches();
 
         let force = matches.is_present("force");
@@ -57,6 +62,7 @@ impl Options {
             slug: slug,
             out_issues: Options::out_file(force, &slug_prefix, "issues", matches.is_present("no-issues"), matches.value_of("issues")),
             out_pull_requests: Options::out_file(force, &slug_prefix, "pulls", matches.is_present("no-pulls"), matches.value_of("pulls")),
+            compact: matches.is_present("compact"),
         }
     }
 

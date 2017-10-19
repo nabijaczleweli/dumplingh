@@ -20,9 +20,9 @@ use serde_json;
 /// # fs::create_dir_all(&issues_file).unwrap();
 /// # issues_file.push("issues.json");
 /// # let issues = "issues.json";
-/// assert_eq!(save_to_file(&issues_file, &issues, "issues"), Ok(()));
+/// assert_eq!(save_to_file(&issues_file, &issues, false, "issues"), Ok(()));
 /// ```
-pub fn save_to_file<P: AsRef<Path>, S: Serialize>(out_p: P, val: &S, what: &'static str) -> Result<(), Error> {
+pub fn save_to_file<P: AsRef<Path>, S: Serialize>(out_p: P, val: &S, compact: bool, what: &'static str) -> Result<(), Error> {
     save_data(&mut File::create(out_p).map_err(|_| {
             Error::Io {
                 desc: what,
@@ -31,6 +31,7 @@ pub fn save_to_file<P: AsRef<Path>, S: Serialize>(out_p: P, val: &S, what: &'sta
             }
         })?,
               val,
+              compact,
               what)
 }
 
@@ -45,11 +46,16 @@ pub fn save_to_file<P: AsRef<Path>, S: Serialize>(out_p: P, val: &S, what: &'sta
 /// # */
 /// # let issues: [bool; 0] = [];
 /// let mut out = vec![];
-/// assert_eq!(save_data(&mut out, &issues, "issues"), Ok(()));
+/// assert_eq!(save_data(&mut out, &issues, false, "issues"), Ok(()));
 /// assert_eq!(out, b"[]");
 /// ```
-pub fn save_data<W: Write, S: Serialize>(out: &mut W, val: &S, what: &'static str) -> Result<(), Error> {
-    serde_json::to_writer_pretty(out, val).map_err(|_| {
+pub fn save_data<W: Write, S: Serialize>(out: &mut W, val: &S, compact: bool, what: &'static str) -> Result<(), Error> {
+    (if compact {
+            serde_json::to_writer
+        } else {
+            serde_json::to_writer_pretty
+        })(out, val)
+        .map_err(|_| {
         Error::Io {
             desc: what,
             op: "serialise",

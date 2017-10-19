@@ -24,7 +24,7 @@
 //! # out_path.push("pulls.json");
 //! let repo = "nabijaczleweli/cargo-update".parse().unwrap();
 //! let pulls = list_pull_requests(&repo).unwrap();
-//! save_to_file(out_path, &pulls, "pull requests").unwrap();
+//! save_to_file(out_path, &pulls, false, "pull requests").unwrap();
 //! ```
 //!
 //! # dumplingh as аn executable
@@ -43,6 +43,7 @@
 //! | --no-issues                  | Don't export issues.                                                     |
 //! | --no-pulls                   | Don't export pull requests.                                              |
 //! | --force                      | Override existing files.                                                 |
+//! | --compact                    | Don't pretty-print exported JSON.                                        |
 
 
 extern crate serde_json;

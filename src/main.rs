@@ -24,11 +24,11 @@ fn result_main() -> Result<(), Error> {
     let opts = Options::parse();
 
     if let Some((_, out_issues)) = opts.out_issues {
-        ops::save_to_file(out_issues, &ops::list_issues(&opts.slug)?, "issues")?;
+        ops::save_to_file(out_issues, &ops::list_issues(&opts.slug)?, opts.compact, "issues")?;
     }
 
     if let Some((_, out_pull_requests)) = opts.out_pull_requests {
-        ops::save_to_file(out_pull_requests, &ops::list_pull_requests(&opts.slug)?, "pull requests")?;
+        ops::save_to_file(out_pull_requests, &ops::list_pull_requests(&opts.slug)?, opts.compact, "pull requests")?;
     }
 
     Ok(())
