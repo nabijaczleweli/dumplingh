@@ -35,6 +35,10 @@ pub struct Options {
     ///
     /// Default: `"./<slug>-labels.json"`.
     pub out_labels: Option<(String, PathBuf)>,
+    /// File to write milestones to, if any.
+    ///
+    /// Default: `"./<slug>-milestones.json"`.
+    pub out_milestones: Option<(String, PathBuf)>,
     /// Whether to compact-print, as opposed to pretty-print, exported JSON.
     ///
     /// Default: `false`.
@@ -50,15 +54,19 @@ impl Options {
             .arg(Arg::from_usage("-i --issues [ISSUES_FILE] 'File to write issues to. Default: <slug>-issues.json'")
                 .validator(|s| Options::out_file_validator(s, "Issues"))
                 .conflicts_with("no-issues"))
-            .arg(Arg::from_usage("--no-issues 'Don't export issues'").conflicts_with("issues"))
             .arg(Arg::from_usage("-p --pulls [PULLS_FILE] 'File to write pull requests to. Default: <slug>-pulls.json'")
                 .validator(|s| Options::out_file_validator(s, "Pulls"))
                 .conflicts_with("no-pulls"))
-            .arg(Arg::from_usage("--no-pulls 'Don't export pulls'").conflicts_with("pulls"))
-            .arg(Arg::from_usage("-l --labels [LABELS_FILE] 'File to write pull requests to. Default: <slug>-labels.json'")
+            .arg(Arg::from_usage("-l --labels [LABELS_FILE] 'File to write labels to. Default: <slug>-labels.json'")
                 .validator(|s| Options::out_file_validator(s, "Labels"))
                 .conflicts_with("no-labels"))
+            .arg(Arg::from_usage("-m --milestones [MILESTONES_FILE] 'File to write milestones to. Default: <slug>-milestones.json'")
+                .validator(|s| Options::out_file_validator(s, "Milestones"))
+                .conflicts_with("no-milestones"))
+            .arg(Arg::from_usage("--no-issues 'Don't export issues'").conflicts_with("issues"))
+            .arg(Arg::from_usage("--no-pulls 'Don't export pulls'").conflicts_with("pulls"))
             .arg(Arg::from_usage("--no-labels 'Don't export labels'").conflicts_with("labels"))
+            .arg(Arg::from_usage("--no-milestones 'Don't export milestones'").conflicts_with("milestones"))
             .arg(Arg::from_usage("-f --force 'Overwrite existing files'"))
             .arg(Arg::from_usage("-c --compact 'Don't pretty-print exported JSON'"))
             .get_matches();
@@ -71,6 +79,11 @@ impl Options {
             out_issues: Options::out_file(force, &slug_prefix, "issues", matches.is_present("no-issues"), matches.value_of("issues")),
             out_pull_requests: Options::out_file(force, &slug_prefix, "pulls", matches.is_present("no-pulls"), matches.value_of("pulls")),
             out_labels: Options::out_file(force, &slug_prefix, "labels", matches.is_present("no-labels"), matches.value_of("labels")),
+            out_milestones: Options::out_file(force,
+                                              &slug_prefix,
+                                              "milestones",
+                                              matches.is_present("no-milestones"),
+                                              matches.value_of("milestones")),
             compact: matches.is_present("compact"),
         }
     }
@@ -89,7 +102,12 @@ impl Options {
             } else {
                 let fname = arg.file_name().unwrap().to_os_string();
                 arg.pop();
-                let mut arg_can = fs::canonicalize(&arg).unwrap();
+                let mut arg_can = fs::canonicalize(if !arg.is_absolute() {
+                        PathBuf::from(".")
+                    } else {
+                        arg
+                    })
+                    .unwrap();
                 arg_can.push(fname);
 
                 Some((arg_s, arg_can))
@@ -110,11 +128,18 @@ impl Options {
 
     fn out_file_validator(s: String, desc: &str) -> Result<(), String> {
         let mut p = PathBuf::from(&s);
-        p.pop();
-        fs::canonicalize(&p).map_err(|_| format!("{}'s parent directory \"{}\" nonexistant", desc, p.display())).and_then(|f| if !f.is_file() {
-            Ok(())
+        if !p.is_absolute() {
+            p = PathBuf::from(format!("./{}", s));
+        }
+        if p.parent().is_some() {
+            p.pop();
+            fs::canonicalize(&p).map_err(|_| format!("{}'s parent directory \"{}\" nonexistant", desc, p.display())).and_then(|f| if !f.is_file() {
+                Ok(())
+            } else {
+                Err(format!("{}'s parent directory \"{}\" actually a file", desc, p.display()))
+            })
         } else {
-            Err(format!("{}'s parent directory \"{}\" actually a file", desc, p.display()))
-        })
+            Ok(())
+        }
     }
 }

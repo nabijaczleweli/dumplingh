@@ -35,5 +35,9 @@ fn result_main() -> Result<(), Error> {
         ops::save_to_file(out_labels, &ops::list_labels(&opts.slug)?, opts.compact, "labels")?;
     }
 
+    if let Some((_, out_milestones)) = opts.out_milestones {
+        ops::save_to_file(out_milestones, &ops::list_milestones(&opts.slug)?, opts.compact, "milestones")?;
+    }
+
     Ok(())
 }

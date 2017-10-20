@@ -11,4 +11,4 @@ mod slug;
 
 pub use self::slug::RepoSlug;
 pub use self::write::{save_to_file, save_data};
-pub use self::network::{list_pull_requests, list_issues, list_labels};
+pub use self::network::{list_pull_requests, list_milestones, list_issues, list_labels};
