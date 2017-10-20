@@ -31,5 +31,9 @@ fn result_main() -> Result<(), Error> {
         ops::save_to_file(out_pull_requests, &ops::list_pull_requests(&opts.slug)?, opts.compact, "pull requests")?;
     }
 
+    if let Some((_, out_labels)) = opts.out_labels {
+        ops::save_to_file(out_labels, &ops::list_labels(&opts.slug)?, opts.compact, "labels")?;
+    }
+
     Ok(())
 }

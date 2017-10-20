@@ -29,8 +29,12 @@ pub struct Options {
     pub out_issues: Option<(String, PathBuf)>,
     /// File to write pull requests to, if any.
     ///
-    /// Default: `"./<slug>-prs.json"`.
+    /// Default: `"./<slug>-pulls.json"`.
     pub out_pull_requests: Option<(String, PathBuf)>,
+    /// File to write labels to, if any.
+    ///
+    /// Default: `"./<slug>-labels.json"`.
+    pub out_labels: Option<(String, PathBuf)>,
     /// Whether to compact-print, as opposed to pretty-print, exported JSON.
     ///
     /// Default: `false`.
@@ -46,11 +50,15 @@ impl Options {
             .arg(Arg::from_usage("-i --issues [ISSUES_FILE] 'File to write issues to. Default: <slug>-issues.json'")
                 .validator(|s| Options::out_file_validator(s, "Issues"))
                 .conflicts_with("no-issues"))
-            .arg(Arg::from_usage("--no-issues 'Don\\'t export issues'").conflicts_with("issues"))
+            .arg(Arg::from_usage("--no-issues 'Don't export issues'").conflicts_with("issues"))
             .arg(Arg::from_usage("-p --pulls [PULLS_FILE] 'File to write pull requests to. Default: <slug>-pulls.json'")
                 .validator(|s| Options::out_file_validator(s, "Pulls"))
                 .conflicts_with("no-pulls"))
-            .arg(Arg::from_usage("--no-pulls 'Don\\'t export pulls'").conflicts_with("pulls"))
+            .arg(Arg::from_usage("--no-pulls 'Don't export pulls'").conflicts_with("pulls"))
+            .arg(Arg::from_usage("-l --labels [LABELS_FILE] 'File to write pull requests to. Default: <slug>-labels.json'")
+                .validator(|s| Options::out_file_validator(s, "Labels"))
+                .conflicts_with("no-labels"))
+            .arg(Arg::from_usage("--no-labels 'Don't export labels'").conflicts_with("labels"))
             .arg(Arg::from_usage("-f --force 'Overwrite existing files'"))
             .arg(Arg::from_usage("-c --compact 'Don't pretty-print exported JSON'"))
             .get_matches();
@@ -62,6 +70,7 @@ impl Options {
             slug: slug,
             out_issues: Options::out_file(force, &slug_prefix, "issues", matches.is_present("no-issues"), matches.value_of("issues")),
             out_pull_requests: Options::out_file(force, &slug_prefix, "pulls", matches.is_present("no-pulls"), matches.value_of("pulls")),
+            out_labels: Options::out_file(force, &slug_prefix, "labels", matches.is_present("no-labels"), matches.value_of("labels")),
             compact: matches.is_present("compact"),
         }
     }

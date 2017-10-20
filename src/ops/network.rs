@@ -64,3 +64,8 @@ pub fn list_issues(repo: &RepoSlug) -> Result<Vec<Value>, Error> {
 pub fn list_pull_requests(repo: &RepoSlug) -> Result<Vec<Value>, Error> {
     list_things(repo, "pulls")
 }
+
+/// List all labels for the specified repository.
+pub fn list_labels(repo: &RepoSlug) -> Result<Vec<Value>, Error> {
+    list_things(repo, "labels")
+}
