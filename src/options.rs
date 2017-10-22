@@ -39,10 +39,20 @@ pub struct Options {
     ///
     /// Default: `"./<slug>-milestones.json"`.
     pub out_milestones: Option<(String, PathBuf)>,
+    /// File to write projects to, if any.
+    ///
+    /// Default: `"./<slug>-projects.json"`.
+    pub out_projects: Option<(String, PathBuf)>,
     /// Whether to compact-print, as opposed to pretty-print, exported JSON.
     ///
     /// Default: `false`.
     pub compact: bool,
+    /// GitHub OAuth2 token.
+    ///
+    /// Required for: projects.
+    ///
+    /// Default: `None`.
+    pub github_token: Option<String>,
 }
 
 impl Options {
@@ -63,17 +73,24 @@ impl Options {
             .arg(Arg::from_usage("-m --milestones [MILESTONES_FILE] 'File to write milestones to. Default: <slug>-milestones.json'")
                 .validator(|s| Options::out_file_validator(s, "Milestones"))
                 .conflicts_with("no-milestones"))
+            .arg(Arg::from_usage("--projects [PROJECTS_FILE] 'File to write projects to. Default: <slug>-projects.json'")
+                .validator(|s| Options::out_file_validator(s, "Projects"))
+                .conflicts_with("no-projects")
+                .requires("auth"))
             .arg(Arg::from_usage("--no-issues 'Don't export issues'").conflicts_with("issues"))
             .arg(Arg::from_usage("--no-pulls 'Don't export pulls'").conflicts_with("pulls"))
             .arg(Arg::from_usage("--no-labels 'Don't export labels'").conflicts_with("labels"))
             .arg(Arg::from_usage("--no-milestones 'Don't export milestones'").conflicts_with("milestones"))
+            .arg(Arg::from_usage("--no-projects 'Don't export projects'").conflicts_with("projects"))
             .arg(Arg::from_usage("-f --force 'Overwrite existing files'"))
             .arg(Arg::from_usage("-c --compact 'Don't pretty-print exported JSON'"))
+            .arg(Arg::from_usage("-a --auth [AUTH_TOKEN] 'GitHub OAuth2 token. Required for projects'"))
             .get_matches();
 
         let force = matches.is_present("force");
         let slug: RepoSlug = matches.value_of("REPO_SLUG").unwrap().parse().unwrap();
         let slug_prefix = slug.filename();
+        let token = matches.value_of("auth").map(String::from);
         Options {
             slug: slug,
             out_issues: Options::out_file(force, &slug_prefix, "issues", matches.is_present("no-issues"), matches.value_of("issues")),
@@ -84,7 +101,13 @@ impl Options {
                                               "milestones",
                                               matches.is_present("no-milestones"),
                                               matches.value_of("milestones")),
+            out_projects: if token.is_some() {
+                Options::out_file(force, &slug_prefix, "projects", matches.is_present("no-projects"), matches.value_of("projects"))
+            } else {
+                None
+            },
             compact: matches.is_present("compact"),
+            github_token: token,
         }
     }
 

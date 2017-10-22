@@ -14,6 +14,7 @@ authors = ["nabijaczleweli <nabijaczleweli@gmail.com>"]
 
 [dependencies]
 serde_derive = "1.0"
+lazy_static = "0.2"
 serde_json = "1.0"
 reqwest = "0.8"
 serde = "1.0"

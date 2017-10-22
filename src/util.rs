@@ -1,8 +1,16 @@
 //! Module containing various utility functions.
 
 
+use reqwest::mime::Mime;
+
+
 /// App name and version to use with User-Agent request header.
 pub static USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("CARGO_PKG_VERSION"));
+
+lazy_static! {
+    /// Custom media type for the `Accept` header to get [projects](https://developer.github.com/v3/projects/) from the GH API.
+    pub static ref GITHUB_PROJECTS_ACCEPT_MIMETYPE: Mime = "application/vnd.github.inertia-preview+json".parse().unwrap();
+}
 
 
 /// Uppercase the first character of the supplied string.
