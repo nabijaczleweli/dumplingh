@@ -43,6 +43,10 @@ pub struct Options {
     ///
     /// Default: `"./<slug>-projects.json"`.
     pub out_projects: Option<(String, PathBuf)>,
+    /// Directory to write comments to, if any.
+    ///
+    /// Default: `"./<slug>-comments/"`.
+    pub out_comments: Option<(String, PathBuf)>,
     /// Whether to compact-print, as opposed to pretty-print, exported JSON.
     ///
     /// Default: `false`.
@@ -77,11 +81,15 @@ impl Options {
                 .validator(|s| Options::out_file_validator(s, "Projects"))
                 .conflicts_with("no-projects")
                 .requires("auth"))
+            .arg(Arg::from_usage("--comments [COMMENTS_DIR] 'Directory to write comments to. Default: <slug>-comments/'")
+                .validator(|s| Options::out_file_validator(s, "comments"))
+                .conflicts_with("no-comments"))
             .arg(Arg::from_usage("--no-issues 'Don't export issues'").conflicts_with("issues"))
             .arg(Arg::from_usage("--no-pulls 'Don't export pulls'").conflicts_with("pulls"))
             .arg(Arg::from_usage("--no-labels 'Don't export labels'").conflicts_with("labels"))
             .arg(Arg::from_usage("--no-milestones 'Don't export milestones'").conflicts_with("milestones"))
             .arg(Arg::from_usage("--no-projects 'Don't export projects'").conflicts_with("projects"))
+            .arg(Arg::from_usage("--no-comments 'Don't export comments'").conflicts_with("comments"))
             .arg(Arg::from_usage("-f --force 'Overwrite existing files'"))
             .arg(Arg::from_usage("-c --compact 'Don't pretty-print exported JSON'"))
             .arg(Arg::from_usage("-a --auth [AUTH_TOKEN] 'GitHub OAuth2 token. Required for projects'"))
@@ -93,27 +101,49 @@ impl Options {
         let token = matches.value_of("auth").map(String::from);
         Options {
             slug: slug,
-            out_issues: Options::out_file(force, &slug_prefix, "issues", matches.is_present("no-issues"), matches.value_of("issues")),
-            out_pull_requests: Options::out_file(force, &slug_prefix, "pulls", matches.is_present("no-pulls"), matches.value_of("pulls")),
-            out_labels: Options::out_file(force, &slug_prefix, "labels", matches.is_present("no-labels"), matches.value_of("labels")),
+            out_issues: Options::out_file(force,
+                                          &slug_prefix,
+                                          ".json",
+                                          "issues",
+                                          matches.is_present("no-issues"),
+                                          matches.value_of("issues")),
+            out_pull_requests: Options::out_file(force, &slug_prefix, ".json", "pulls", matches.is_present("no-pulls"), matches.value_of("pulls")),
+            out_labels: Options::out_file(force,
+                                          &slug_prefix,
+                                          ".json",
+                                          "labels",
+                                          matches.is_present("no-labels"),
+                                          matches.value_of("labels")),
             out_milestones: Options::out_file(force,
                                               &slug_prefix,
+                                              ".json",
                                               "milestones",
                                               matches.is_present("no-milestones"),
                                               matches.value_of("milestones")),
             out_projects: if token.is_some() {
-                Options::out_file(force, &slug_prefix, "projects", matches.is_present("no-projects"), matches.value_of("projects"))
+                Options::out_file(force,
+                                  &slug_prefix,
+                                  ".json",
+                                  "projects",
+                                  matches.is_present("no-projects"),
+                                  matches.value_of("projects"))
             } else {
                 None
             },
+            out_comments: Options::out_file(force,
+                                            &slug_prefix,
+                                            "",
+                                            "comments",
+                                            matches.is_present("no-comments"),
+                                            matches.value_of("comments")),
             compact: matches.is_present("compact"),
             github_token: token,
         }
     }
 
-    fn out_file(force: bool, slug_prefix: &str, arg: &str, no_file: bool, file_val: Option<&str>) -> Option<(String, PathBuf)> {
+    fn out_file(force: bool, slug_prefix: &str, arg: &str, ext: &str, no_file: bool, file_val: Option<&str>) -> Option<(String, PathBuf)> {
         if !no_file {
-            let arg_s = file_val.map(String::from).unwrap_or_else(|| format!("./{}-{}.json", slug_prefix, arg));
+            let arg_s = file_val.map(String::from).unwrap_or_else(|| format!("./{}-{}{}", slug_prefix, ext, arg));
             let mut arg = PathBuf::from(&arg_s);
             if !force && arg.exists() {
                 clap::Error {

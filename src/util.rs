@@ -30,3 +30,23 @@ pub fn uppercase_first(s: &str) -> String {
         Some(f) => f.to_uppercase().collect::<String>() + c.as_str(),
     }
 }
+
+/// Get how many characters wide the string representation of a number is.
+///
+/// In other words, the max padding for filenames to make sense.
+///
+/// # Examples
+///
+/// ```
+/// # use dumplingh::util::width_for;
+/// assert_eq!(width_for(7), 1);
+/// assert_eq!(width_for(10), 2);
+/// assert_eq!(width_for(579), 3);
+/// ```
+pub fn width_for(len: usize) -> usize {
+    if len == 0 {
+        1
+    } else {
+        (len as f64 + 1f64).log10().ceil() as usize
+    }
+}

@@ -50,9 +50,8 @@ fn request<U: IntoUrl, T: DeserializeOwned>(url: U, accept: Option<&Mime>, auth:
     Ok((res, resp.headers().get().map(|lh: &LinkHeader| lh.values().into()).unwrap_or_else(|| vec![])))
 }
 
-fn list_things(repo: &RepoSlug, accept: Option<&Mime>, auth: Option<&str>, arg: &'static str) -> Result<Vec<Value>, Error> {
+fn list_things_url(mut url: String, accept: Option<&Mime>, auth: Option<&str>, arg: &'static str) -> Result<Vec<Value>, Error> {
     let mut res = vec![];
-    let mut url = format!("https://api.github.com/repos/{}/{}?state=all", repo, arg);
     loop {
         let (iss, links): (Vec<Value>, Vec<HeaderLinkValue>) = request(&url, accept, auth, arg)?;
         res.extend(iss);
@@ -63,6 +62,10 @@ fn list_things(repo: &RepoSlug, accept: Option<&Mime>, auth: Option<&str>, arg: 
         }
     }
     Ok(res)
+}
+
+fn list_things(repo: &RepoSlug, accept: Option<&Mime>, auth: Option<&str>, arg: &'static str) -> Result<Vec<Value>, Error> {
+    list_things_url(format!("https://api.github.com/repos/{}/{}?state=all", repo, arg), accept, auth, arg)
 }
 
 /// List all issues from the specified repository.
@@ -88,4 +91,9 @@ pub fn list_milestones(repo: &RepoSlug, auth: Option<&str>) -> Result<Vec<Value>
 /// List all projects for the specified repository, authenticating with the supplied token.
 pub fn list_projects(repo: &RepoSlug, auth: &str) -> Result<Vec<Value>, Error> {
     list_things(repo, Some(&GITHUB_PROJECTS_ACCEPT_MIMETYPE), Some(auth), "projects")
+}
+
+/// List all comments from the specified URL.
+pub fn list_comments<S: Into<String>>(comments_url: S, auth: Option<&str>) -> Result<Vec<Value>, Error> {
+    list_things_url(comments_url.into(), None, auth, "comments")
 }

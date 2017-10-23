@@ -43,12 +43,14 @@
 //! | --labels &lt;LABELS_FILE&gt;         | File to export labels to, or `./<slug>-labels.json` by default.          |
 //! | --milestones &lt;MILESTONES_FILE&gt; | File to export milestones to, or `./<slug>-milestones.json` by default.  |
 //! | --projects &lt;PROJECTS_FILE&gt;     | File to export projects to, or `./<slug>-projects.json` by default.      |
+//! | --comments &lt;COMMENTS_DIR&gt;      | Directory to export comments to, or `./<slug>-comments` by default.      |
 //! | --auth [AUTH_TOKEN]                  | GitHub OAuth2 token, required for projects.                              |
 //! | --no-issues                          | Don't export issues.                                                     |
 //! | --no-pulls                           | Don't export pull requests.                                              |
 //! | --no-labels                          | Don't export labels.                                                     |
 //! | --no-milestones                      | Don't export milestones.                                                 |
 //! | --no-projects                        | Don't export projects.                                                   |
+//! | --no-comments                        | Don't export comments.                                                   |
 //! | --force                              | Override existing files.                                                 |
 //! | --compact                            | Don't pretty-print exported JSON.                                        |
 

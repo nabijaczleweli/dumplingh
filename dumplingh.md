@@ -75,6 +75,16 @@ Exit values and possible errors:
 
     Default: `./<REPO_SLUG>-projects.json`.
 
+  --comments <COMMENTS_DIR>
+
+    Directory to export comments to.
+
+    Directory must either not exist or --force must be specified.
+
+    Exclusive with --no-comments.
+
+    Default: `./<REPO_SLUG>-comments`.
+
   --no-issues
 
     Don't export issues.
@@ -94,6 +104,10 @@ Exit values and possible errors:
   --no-projects
 
     Don't export projects.
+
+  --no-comments
+
+    Don't export comments.
 
   -f --force
 
