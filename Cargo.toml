@@ -8,7 +8,7 @@ keywords = ["dump", "api", "github"]
 categories = ["api-bindings"]
 license = "MIT"
 # Remember to also update in appveyor.yml
-version = "0.1.0"
+version = "0.2.0"
 # Remember to also update in dumplingh.md
 authors = ["nabijaczleweli <nabijaczleweli@gmail.com>"]
 

@@ -1,10 +1,10 @@
-version: 0.1.0-{build}
+version: 0.2.0-{build}
 skip_tags: false
 
 platform: x64
 configuration: Release
 
-clone_folder: C:\dumplingh.rs
+clone_folder: C:\dumplingh
 
 install:
   - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%;C:\Users\appveyor\.cargo\bin
@@ -19,19 +19,19 @@ build: off
 build_script:
   - git submodule update --init --recursive
   - cargo build --verbose --release
-  - cp target\release\dumplingh.exe dumplingh-v0.1.0.exe
-  - strip --strip-all --remove-section=.comment --remove-section=.note dumplingh-v0.1.0.exe
+  - cp target\release\dumplingh.exe dumplingh-v0.2.0.exe
+  - strip --strip-all --remove-section=.comment --remove-section=.note dumplingh-v0.2.0.exe
 
 test: off
 test_script:
   - cargo test --verbose --release
 
 artifacts:
-  - path: dumplingh-v0.1.0.exe
+  - path: dumplingh-v0.2.0.exe
 
 deploy:
   provider: GitHub
-  artifact: dumplingh-v0.1.0.exe
+  artifact: dumplingh-v0.2.0.exe
   auth_token:
     secure: b8G+fseJqf0Z/TVwChqbD+HKvmKUnkXU8VOxhK5UFyPuqWvQjwF0vLd6f6ot8vht
   on:
