@@ -70,7 +70,7 @@ fn result_main() -> Result<(), Error> {
 
     if let Some((_, out_projects)) = opts.out_projects {
         ops::save_to_file(out_projects,
-                          &ops::list_projects(&opts.slug, &opts.github_token.as_ref().unwrap())?,
+                          &ops::list_projects(&opts.slug, opts.github_token.as_ref().unwrap())?,
                           opts.compact,
                           "projects")?;
     }
