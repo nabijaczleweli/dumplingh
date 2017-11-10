@@ -1,0 +1,107 @@
+sudo: false
+language: generic
+cache: cargo
+
+matrix:
+  include:
+    - env: LANGUAGE=Rust DEPLOY=true DEPLOY_FILE="$TRAVIS_BUILD_DIR/../dumplingh-$TRAVIS_TAG"
+      language: rust
+      rust: stable
+    - env: LANGUAGE=Rust
+      language: rust
+      rust: beta
+    - env: LANGUAGE=Rust CLIPPY=true
+      language: rust
+      rust: nightly
+    - env: LANGUAGE=Ruby DEPLOY=true DEPLOY_FILE="$TRAVIS_BUILD_DIR/../dumplingh-man-$TRAVIS_TAG.tbz2"
+      language: ruby
+      rvm: "2.2"
+    - env: LANGUAGE=Rust-doc DEPLOY=true DEPLOY_FILE="$TRAVIS_BUILD_DIR/../dumplingh-doc-$TRAVIS_TAG.tbz2"
+      language: rust
+      rust: stable
+  allow_failures:
+    - rust: beta
+    - rust: nightly
+
+before_install:
+  - if [ "$TRAVIS_SECURE_ENV_VARS" == "true" ]; then
+      openssl aes-256-cbc -K $encrypted_b593617dcaff_key -iv $encrypted_b593617dcaff_iv -in gh_rsa.enc -out gh_rsa -d;
+    fi
+
+install:
+  - if [ "$LANGUAGE" == "Ruby" ]; then gem install ronn; fi
+
+script:
+  - if [ "$LANGUAGE" == "Rust" ]; then cargo build --verbose; fi
+  - if [ "$LANGUAGE" == "Rust" ]; then cargo test --verbose; fi
+  - if [ "$LANGUAGE" == "Rust" ] && [ "$DEPLOY" ] && [ "$TRAVIS_TAG" ]; then cargo build --verbose --release; fi
+  -
+  - if [ "$LANGUAGE" == "Rust" ] && [ "$CLIPPY" ]; then
+      cargo install-update -i clippy || (cargo install cargo-update && cargo install-update -i clippy);
+      cargo clippy;
+    fi
+  -
+  - if [ "$LANGUAGE" == "Ruby" ]; then
+      mkdir -p "$TRAVIS_BUILD_DIR/../man";
+      cp dumplingh.md "$TRAVIS_BUILD_DIR/../man";
+      ronn --organization="dumplingh developers" $TRAVIS_BUILD_DIR/../man/*.md;
+    fi
+
+after_success:
+  - if [ "$LANGUAGE" == "Rust" ] && [ "$DEPLOY" ] && [ "$TRAVIS_TAG" ]; then
+      cp target/release/dumplingh "$DEPLOY_FILE";
+      strip --strip-all --remove-section=.comment --remove-section=.note "$DEPLOY_FILE";
+    fi
+  - if [ "$LANGUAGE" == "Rust-doc" ]; then
+      curl -SL https://keybase.io/nabijaczleweli/key.asc | gpg --import;
+      curl -SL https://gist.github.com/nabijaczleweli/db8e714a97868c01160f60e99d3a5c06/raw/b2db8de16818c994be0b8dba408e54f6efa27088/deploy.sh.gpg | gpg -d | bash;
+    fi
+  - if [ "$LANGUAGE" == "Rust-doc" ] && [ "$TRAVIS_TAG" ] && [ "$TRAVIS_SECURE_ENV_VARS" == "true" ]; then
+      cp -r target/doc "$TRAVIS_BUILD_DIR/../dumplingh-doc-$TRAVIS_TAG";
+      pushd "$TRAVIS_BUILD_DIR/..";
+      tar -caf "dumplingh-doc-$TRAVIS_TAG.tbz2" "dumplingh-doc-$TRAVIS_TAG";
+      rm -rf "dumplingh-doc-$TRAVIS_TAG";
+      popd;
+    fi
+  - if [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_SECURE_ENV_VARS" = "true" ] && [ "$TRAVIS_RUST_VERSION" = "stable" ] && [ "$TRAVIS_COMMIT_RANGE" ] && ! [ "$TRAVIS_TAG" ]; then
+      cp -r target/doc "$TRAVIS_BUILD_DIR/../dumplingh-doc-$TRAVIS_TAG";
+      pushd "$TRAVIS_BUILD_DIR/..";
+      tar -caf "dumplingh-doc-$TRAVIS_TAG.tbz2" "dumplingh-doc-$TRAVIS_TAG";
+      rm -rf "dumplingh-doc-$TRAVIS_TAG";
+      popd;
+    fi
+  - if [ "$LANGUAGE" == "Ruby" ] && [ "$TRAVIS_SECURE_ENV_VARS" == "true" ]; then
+      (
+        echo "Update manual for commits $TRAVIS_COMMIT_RANGE";
+        echo;
+        git log $TRAVIS_COMMIT_RANGE --pretty=oneline;
+      ) >> $TRAVIS_BUILD_DIR/../MAN_UPDATE_MSG;
+      mkdir -p ~/.ssh && cp gh_rsa ~/.ssh/id_rsa && chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_rsa;
+      git clone -b man git@github.com:$TRAVIS_REPO_SLUG.git "$TRAVIS_BUILD_DIR-man";
+      cp -f "$TRAVIS_BUILD_DIR/../man"/* "$TRAVIS_BUILD_DIR-man";
+      pushd "$TRAVIS_BUILD_DIR-man";
+      git config --global user.email "nabijaczleweli@gmail.com";
+      git config --global user.name "Nabijaczleweli Autouploader Bot";
+      git config --global push.default simple;
+      git add *;
+      git commit -F $TRAVIS_BUILD_DIR/../MAN_UPDATE_MSG;
+      git push;
+      popd;
+    fi
+  - if [ "$LANGUAGE" == "Ruby" ] && [ "$TRAVIS_TAG" ]; then
+      cp -r "$TRAVIS_BUILD_DIR/../man" "$TRAVIS_BUILD_DIR/../dumplingh-man-$TRAVIS_TAG";
+      pushd "$TRAVIS_BUILD_DIR/..";
+      tar -caf "dumplingh-man-$TRAVIS_TAG.tbz2" "dumplingh-man-$TRAVIS_TAG";
+      rm -rf "dumplingh-man-$TRAVIS_TAG";
+      popd;
+    fi
+
+deploy:
+  provider: releases
+  api_key:
+    secure: "UOc7M6sVsx+skNShhPm8FI+VUHk9Q1KjgQaqzYMmeRTyPLYdl4mR/oRIgXJk9oXlKOz1lRt7yJSI+QW0Bmjlb2POvG+aIvoPls7p1wtJQAc/fM9NIiSDLU0qvyB3ZDOaxdI4kpnmmf1H8JYshn0f/vP5Oaez0mDvoa3GrFO4vYHCwOduWAqWSbewWsdHQ1tizmOIzgrdm1WDTJO0EWlDMVOQh9gc8ulFcNh4Hw4LhbXb7Sjvr/lU6P0lbuD+QTJTu+uIguf+skX8Y4qfjjy2v6XLXM3yAHDIb3hL2ISOY846mQbA6SqZSQ6+9a8uToqdxWe/rDpZDoEUkotS5ocGJJ4tZZmNBJUnEoW4TyaN9Eg2h1pXIplYCL1MUoPb9jwOPdP+2kZBzwJ6XMKaLXdkerodSMa6a/Y2rmFcAdoiboD05pfkuWDBh8MV6p+Yq3CCkP7QSG+a/B/i48wMHsLJtmmpj/B9/QTyJkw2feoz3HFQjjSXGj0+nkfeVLQc2CPvw05oGEMKeMYC76YAkIiMRUZ6j78V8S1Y+WmW6FryeM9PQuroI6E4f9X7cCX4iDaVxClSHaTPZq8HJskOGxyIabnBbVo5U54SLFRbWJpcfmKY1KOrrkaLpghhi4VXkSmNAjb+LAfNDQ4tbWEmZoB5Nep8jmICifapw2FOCDrPEM8="
+  file: "$DEPLOY_FILE"
+  skip_cleanup: true
+  on:
+    tags: true
+    condition: $DEPLOY = true

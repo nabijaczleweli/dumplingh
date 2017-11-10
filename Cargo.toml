@@ -1,0 +1,22 @@
+[package]
+name = "dumplingh"
+description = "Issue/PR exporter for GitHub"
+repository = "https://github.com/nabijaczleweli/dumplingh"
+documentation = "https://cdn.rawgit.com/nabijaczleweli/dumplingh/doc/dumplingh/index.html"
+readme = "README.md"
+keywords = ["dump", "api", "github"]
+categories = ["api-bindings"]
+license = "MIT"
+# Remember to also update in appveyor.yml
+version = "0.1.0"
+# Remember to also update in dumplingh.md
+authors = ["nabijaczleweli <nabijaczleweli@gmail.com>"]
+
+[dependencies]
+clap = "2.27"
+
+
+[[bin]]
+name = "dumplingh"
+test = false
+doc = false

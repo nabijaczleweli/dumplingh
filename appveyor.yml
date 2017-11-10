@@ -1,0 +1,45 @@
+version: 0.1.0-{build}
+skip_tags: false
+
+platform: x64
+configuration: Release
+
+clone_folder: C:\dumplingh.rs
+
+install:
+  - set PATH=C:\msys64\mingw64\bin;C:\msys64\usr\bin;%PATH%;C:\Users\appveyor\.cargo\bin
+  - bash -lc "pacman --needed --noconfirm -Sy pacman-mirrors"
+  - bash -lc "pacman --noconfirm -Sy"
+  - bash -lc "pacman --noconfirm -S mingw-w64-x86_64-toolchain"
+  -
+  - curl -SL https://win.rustup.rs/ -oC:\rustup-init.exe
+  - C:\rustup-init.exe -y --default-host="x86_64-pc-windows-gnu"
+
+build: off
+build_script:
+  - git submodule update --init --recursive
+  - cargo build --verbose --release
+  - cp target\release\dumplingh.exe dumplingh-v0.1.0.exe
+  - strip --strip-all --remove-section=.comment --remove-section=.note dumplingh-v0.1.0.exe
+
+test: off
+test_script:
+  - cargo test --verbose --release
+
+artifacts:
+  - path: dumplingh-v0.1.0.exe
+
+deploy:
+  provider: GitHub
+  artifact: dumplingh-v0.1.0.exe
+  auth_token:
+    secure: b8G+fseJqf0Z/TVwChqbD+HKvmKUnkXU8VOxhK5UFyPuqWvQjwF0vLd6f6ot8vht
+  on:
+    appveyor_repo_tag: true
+
+notifications:
+  - provider: Email
+    to:
+      - nabijaczleweli@gmail.com
+    on_build_status_changed: true
+    on_build_success: false
