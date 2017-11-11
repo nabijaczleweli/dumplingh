@@ -119,6 +119,13 @@
 <span id="74">74</span>
 <span id="75">75</span>
 <span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
 </pre><pre class="rust ">
 <span class="kw">use</span> <span class="self">self</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">Error</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">fmt</span>::{<span class="self">self</span>, <span class="ident">Write</span>};
@@ -147,6 +154,13 @@
     <span class="kw">pub</span> <span class="ident">username</span>: <span class="ident">String</span>,
     <span class="doccomment">/// Repository name.</span>
     <span class="kw">pub</span> <span class="ident">repository</span>: <span class="ident">String</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">RepoSlug</span> {
+    <span class="doccomment">/// A representation of the slug suitable for use in a filename.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">filename</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">String</span> {
+        <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;{}-{}&quot;</span>, <span class="self">self</span>.<span class="ident">username</span>, <span class="self">self</span>.<span class="ident">repository</span>)
+    }
 }
 
 <span class="kw">impl</span> <span class="ident">FromStr</span> <span class="kw">for</span> <span class="ident">RepoSlug</span> {
