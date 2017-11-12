@@ -27,15 +27,91 @@ Exit values and possible errors:
 .IP "" 0
 .
 .SH "OPTIONS"
-\-v \-\-verbose
+\fIREPO_SLUG\fR
 .
 .IP "" 4
 .
 .nf
 
-Print out more data\.
+Repository to export issues and PRs for in the form
+"<username>/<repo>"\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\-i \-\-issues \fIISSUES_FILE\fR
+.
+.IP "" 4
+.
+.nf
 
-Default: false\.
+File to export issues to\.
+
+File must either not exist or \-\-force must be specified\.
+
+Exclusive with \-\-no\-issues\.
+
+Default: `\./<REPO_SLUG>\-issues\.json`\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\-p \-\-pulls \fIPULLS_FILE\fR
+.
+.IP "" 4
+.
+.nf
+
+File to export pull requests to\.
+
+File must either not exist or \-\-force must be specified\.
+
+Exclusive with \-\-no\-pulls\.
+
+Default: \./<REPO_SLUG>\-pulls\.json\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\-\-no\-issues
+.
+.IP "" 4
+.
+.nf
+
+Don\'t export issues\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\-\-no\-pulls
+.
+.IP "" 4
+.
+.nf
+
+Don\'t export pull requests\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\-f \-\-force
+.
+.IP "" 4
+.
+.nf
+
+Allow for overriding <ISSUES_FILE> and <PULLS_FILE>\.
 .
 .fi
 .
