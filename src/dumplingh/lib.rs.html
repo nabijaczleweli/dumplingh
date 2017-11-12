@@ -57,7 +57,101 @@
 <span id="12">12</span>
 <span id="13">13</span>
 <span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
 </pre><pre class="rust ">
+<span class="doccomment">//! Issue/PR exporter for GitHub.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # dumplingh as а library</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## Data flow</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```plaintext</span>
+<span class="doccomment">//! Options::parse()</span>
+<span class="doccomment">//! |&gt; list_{pull_requests,issues}()</span>
+<span class="doccomment">//! |&gt; save_{to_file,data}()</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## Example</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//! # use dumplingh::ops::{save_to_file, list_pull_requests};</span>
+<span class="doccomment">//! # use std::env::temp_dir;</span>
+<span class="doccomment">//! # use std::fs;</span>
+<span class="doccomment">//! # /*</span>
+<span class="doccomment">//! let out_path = &quot;pulls.json&quot;;</span>
+<span class="doccomment">//! # */</span>
+<span class="doccomment">//! # let mut out_path = temp_dir().join(&quot;dumplingh-doctest&quot;);</span>
+<span class="doccomment">//! # fs::create_dir_all(&amp;out_path).unwrap();</span>
+<span class="doccomment">//! # out_path.push(&quot;pulls.json&quot;);</span>
+<span class="doccomment">//! let repo = &quot;nabijaczleweli/cargo-update&quot;.parse().unwrap();</span>
+<span class="doccomment">//! let pulls = list_pull_requests(&amp;repo).unwrap();</span>
+<span class="doccomment">//! save_to_file(out_path, &amp;pulls, &quot;pull requests&quot;).unwrap();</span>
+<span class="doccomment">//! ```</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! # dumplingh as аn executable</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! This is just a very short synopsis of</span>
+<span class="doccomment">//! [the manpage](https://cdn.rawgit.com/nabijaczleweli/dumplingh/man/dumplingh.1.html),</span>
+<span class="doccomment">//! so consult that for more data.</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! ## OPTIONS</span>
+<span class="doccomment">//!</span>
+<span class="doccomment">//! | Option                       | Description                                                              |</span>
+<span class="doccomment">//! |------------------------------|--------------------------------------------------------------------------|</span>
+<span class="doccomment">//! | &amp;lt;REPO_SLUG&amp;gt;            | Repository to export issues and PRs for in the form `&lt;username&gt;/&lt;repo&gt;`. |</span>
+<span class="doccomment">//! | --issues &amp;lt;ISSUES_FILE&amp;gt; | File to export issues to, or `./&lt;slug&gt;-issues.json` by default.          |</span>
+<span class="doccomment">//! | --pulls  &amp;lt;PULLS_FILE&amp;gt;  | File to export pull requests to, or `./&lt;slug&gt;-pulls.json` by default.    |</span>
+<span class="doccomment">//! | --no-issues                  | Don&#39;t export issues.                                                     |</span>
+<span class="doccomment">//! | --no-pulls                   | Don&#39;t export pull requests.                                              |</span>
+<span class="doccomment">//! | --force                      | Override existing files.                                                 |</span>
+
+
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_json</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">reqwest</span>;
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde</span>;
