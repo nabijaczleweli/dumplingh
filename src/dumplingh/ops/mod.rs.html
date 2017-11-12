@@ -46,10 +46,18 @@
     <section id='main' class="content"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
 <span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
 </pre><pre class="rust ">
+<span class="kw">mod</span> <span class="ident">network</span>;
+<span class="kw">mod</span> <span class="ident">write</span>;
 <span class="kw">mod</span> <span class="ident">slug</span>;
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">slug</span>::<span class="ident">RepoSlug</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">write</span>::{<span class="ident">save_to_file</span>, <span class="ident">save_data</span>};
+<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">network</span>::{<span class="ident">list_pull_requests</span>, <span class="ident">list_issues</span>};
 </pre>
 </section>
     <section id='search' class="content hidden"></section>

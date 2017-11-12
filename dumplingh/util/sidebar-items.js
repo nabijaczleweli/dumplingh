@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["uppercase_first","Uppercase the first character of the supplied string."]]});
+initSidebarItems({"fn":[["uppercase_first","Uppercase the first character of the supplied string."]],"static":[["USER_AGENT","App name and version to use with User-Agent request header."]]});
