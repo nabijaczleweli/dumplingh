@@ -4,20 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `src/ops/mod.rs`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang">
+    <meta name="description" content="API documentation for the Rust `list_milestones` fn in crate `dumplingh`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, list_milestones">
 
-    <title>mod.rs.html -- source</title>
+    <title>dumplingh::ops::list_milestones - Rust</title>
 
-    <link rel="stylesheet" type="text/css" href="../../../normalize.css">
-    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    <link rel="stylesheet" type="text/css" href="../../normalize.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
     
 
     
     
 </head>
-<body class="rustdoc source">
+<body class="rustdoc fn">
     <!--[if lte IE 8]>
     <div class="warning">
         This old browser is unsupported and will most likely display funky
@@ -29,7 +29,7 @@
 
     <nav class="sidebar">
         
-        
+        <p class='location'><a href='../index.html'>dumplingh</a>::<wbr><a href='index.html'>ops</a></p><script>window.sidebarCurrent = {name: 'list_milestones', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -43,37 +43,14 @@
         </form>
     </nav>
 
-    <section id='main' class="content"><pre class="line-numbers"><span id="1"> 1</span>
-<span id="2"> 2</span>
-<span id="3"> 3</span>
-<span id="4"> 4</span>
-<span id="5"> 5</span>
-<span id="6"> 6</span>
-<span id="7"> 7</span>
-<span id="8"> 8</span>
-<span id="9"> 9</span>
-<span id="10">10</span>
-<span id="11">11</span>
-<span id="12">12</span>
-<span id="13">13</span>
-<span id="14">14</span>
-</pre><pre class="rust ">
-<span class="doccomment">//! Main functions doing actual work.</span>
-<span class="doccomment">//!</span>
-<span class="doccomment">//! Use `str::parse::&lt;RepoSlug&gt;()` to validate your repository slug,</span>
-<span class="doccomment">//! `list_{pull_requests,issues}()` to download your data and</span>
-<span class="doccomment">//! `save_{to_file,data}()` to save it.</span>
-
-
-<span class="kw">mod</span> <span class="ident">network</span>;
-<span class="kw">mod</span> <span class="ident">write</span>;
-<span class="kw">mod</span> <span class="ident">slug</span>;
-
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">slug</span>::<span class="ident">RepoSlug</span>;
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">write</span>::{<span class="ident">save_to_file</span>, <span class="ident">save_data</span>};
-<span class="kw">pub</span> <span class="kw">use</span> <span class="self">self</span>::<span class="ident">network</span>::{<span class="ident">list_pull_requests</span>, <span class="ident">list_milestones</span>, <span class="ident">list_issues</span>, <span class="ident">list_labels</span>};
-</pre>
-</section>
+    <section id='main' class="content">
+<h1 class='fqn'><span class='in-band'>Function <a href='../index.html'>dumplingh</a>::<wbr><a href='index.html'>ops</a>::<wbr><a class="fn" href=''>list_milestones</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a class='srclink' href='../../src/dumplingh/ops/network.rs.html#74-76' title='goto source code'>[src]</a></span></h1>
+<pre class='rust fn'>pub fn list_milestones(repo: &amp;<a class="struct" href="../../dumplingh/ops/struct.RepoSlug.html" title="struct dumplingh::ops::RepoSlug">RepoSlug</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/nightly/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/vec/struct.Vec.html" title="struct alloc::vec::Vec">Vec</a>&lt;<a class="enum" href="../../serde_json/value/enum.Value.html" title="enum serde_json::value::Value">Value</a>&gt;, <a class="enum" href="../../dumplingh/enum.Error.html" title="enum dumplingh::Error">Error</a>&gt;</pre><div class='docblock'><p>List all milestones for the specified repository.</p>
+</div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -127,10 +104,10 @@
     
 
     <script>
-        window.rootPath = "../../../";
+        window.rootPath = "../../";
         window.currentCrate = "dumplingh";
     </script>
-    <script src="../../../main.js"></script>
-    <script defer src="../../../search-index.js"></script>
+    <script src="../../main.js"></script>
+    <script defer src="../../search-index.js"></script>
 </body>
 </html>
