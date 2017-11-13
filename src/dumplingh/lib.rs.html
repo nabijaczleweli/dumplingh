@@ -104,6 +104,7 @@
 <span id="59">59</span>
 <span id="60">60</span>
 <span id="61">61</span>
+<span id="62">62</span>
 </pre><pre class="rust ">
 <span class="doccomment">//! Issue/PR exporter for GitHub.</span>
 <span class="doccomment">//!</span>
@@ -131,7 +132,7 @@
 <span class="doccomment">//! # out_path.push(&quot;pulls.json&quot;);</span>
 <span class="doccomment">//! let repo = &quot;nabijaczleweli/cargo-update&quot;.parse().unwrap();</span>
 <span class="doccomment">//! let pulls = list_pull_requests(&amp;repo).unwrap();</span>
-<span class="doccomment">//! save_to_file(out_path, &amp;pulls, &quot;pull requests&quot;).unwrap();</span>
+<span class="doccomment">//! save_to_file(out_path, &amp;pulls, false, &quot;pull requests&quot;).unwrap();</span>
 <span class="doccomment">//! ```</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! # dumplingh as аn executable</span>
@@ -150,6 +151,7 @@
 <span class="doccomment">//! | --no-issues                  | Don&#39;t export issues.                                                     |</span>
 <span class="doccomment">//! | --no-pulls                   | Don&#39;t export pull requests.                                              |</span>
 <span class="doccomment">//! | --force                      | Override existing files.                                                 |</span>
+<span class="doccomment">//! | --compact                    | Don&#39;t pretty-print exported JSON.                                        |</span>
 
 
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">serde_json</span>;

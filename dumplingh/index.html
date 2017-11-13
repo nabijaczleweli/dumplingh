@@ -48,7 +48,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../src/dumplingh/lib.rs.html#1-61' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../src/dumplingh/lib.rs.html#1-62' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Issue/PR exporter for GitHub.</p>
 
 <h1 id='dumplingh-as-а-library' class='section-header'><a href='#dumplingh-as-а-library'>dumplingh as а library</a></h1>
@@ -63,7 +63,7 @@
 <span class="kw">let</span> <span class="ident">out_path</span> <span class="op">=</span> <span class="string">&quot;pulls.json&quot;</span>;
 <span class="kw">let</span> <span class="ident">repo</span> <span class="op">=</span> <span class="string">&quot;nabijaczleweli/cargo-update&quot;</span>.<span class="ident">parse</span>().<span class="ident">unwrap</span>();
 <span class="kw">let</span> <span class="ident">pulls</span> <span class="op">=</span> <span class="ident">list_pull_requests</span>(<span class="kw-2">&amp;</span><span class="ident">repo</span>).<span class="ident">unwrap</span>();
-<span class="ident">save_to_file</span>(<span class="ident">out_path</span>, <span class="kw-2">&amp;</span><span class="ident">pulls</span>, <span class="string">&quot;pull requests&quot;</span>).<span class="ident">unwrap</span>();</pre>
+<span class="ident">save_to_file</span>(<span class="ident">out_path</span>, <span class="kw-2">&amp;</span><span class="ident">pulls</span>, <span class="bool-val">false</span>, <span class="string">&quot;pull requests&quot;</span>).<span class="ident">unwrap</span>();</pre>
 
 <h1 id='dumplingh-as-аn-executable' class='section-header'><a href='#dumplingh-as-аn-executable'>dumplingh as аn executable</a></h1>
 <p>This is just a very short synopsis of
@@ -103,6 +103,10 @@ so consult that for more data.</p>
 <tr>
 <td>--force</td>
 <td>Override existing files.</td>
+</tr>
+<tr>
+<td>--compact</td>
+<td>Don&#39;t pretty-print exported JSON.</td>
 </tr>
 </tbody>
 </table>
