@@ -188,6 +188,29 @@
 <span id="143">143</span>
 <span id="144">144</span>
 <span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
 </pre><pre class="rust ">
 <span class="doccomment">//! This module contains the configuration of the application.</span>
 <span class="doccomment">//!</span>
@@ -230,10 +253,20 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Default: `&quot;./&lt;slug&gt;-milestones.json&quot;`.</span>
     <span class="kw">pub</span> <span class="ident">out_milestones</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">PathBuf</span>)<span class="op">&gt;</span>,
+    <span class="doccomment">/// File to write projects to, if any.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Default: `&quot;./&lt;slug&gt;-projects.json&quot;`.</span>
+    <span class="kw">pub</span> <span class="ident">out_projects</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">PathBuf</span>)<span class="op">&gt;</span>,
     <span class="doccomment">/// Whether to compact-print, as opposed to pretty-print, exported JSON.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Default: `false`.</span>
     <span class="kw">pub</span> <span class="ident">compact</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// GitHub OAuth2 token.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Required for: projects.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Default: `None`.</span>
+    <span class="kw">pub</span> <span class="ident">github_token</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Options</span> {
@@ -254,17 +287,24 @@
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;-m --milestones [MILESTONES_FILE] &#39;File to write milestones to. Default: &lt;slug&gt;-milestones.json&#39;&quot;</span>)
                 .<span class="ident">validator</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">Options</span>::<span class="ident">out_file_validator</span>(<span class="ident">s</span>, <span class="string">&quot;Milestones&quot;</span>))
                 .<span class="ident">conflicts_with</span>(<span class="string">&quot;no-milestones&quot;</span>))
+            .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--projects [PROJECTS_FILE] &#39;File to write projects to. Default: &lt;slug&gt;-projects.json&#39;&quot;</span>)
+                .<span class="ident">validator</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">Options</span>::<span class="ident">out_file_validator</span>(<span class="ident">s</span>, <span class="string">&quot;Projects&quot;</span>))
+                .<span class="ident">conflicts_with</span>(<span class="string">&quot;no-projects&quot;</span>)
+                .<span class="ident">requires</span>(<span class="string">&quot;auth&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--no-issues &#39;Don&#39;t export issues&#39;&quot;</span>).<span class="ident">conflicts_with</span>(<span class="string">&quot;issues&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--no-pulls &#39;Don&#39;t export pulls&#39;&quot;</span>).<span class="ident">conflicts_with</span>(<span class="string">&quot;pulls&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--no-labels &#39;Don&#39;t export labels&#39;&quot;</span>).<span class="ident">conflicts_with</span>(<span class="string">&quot;labels&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--no-milestones &#39;Don&#39;t export milestones&#39;&quot;</span>).<span class="ident">conflicts_with</span>(<span class="string">&quot;milestones&quot;</span>))
+            .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--no-projects &#39;Don&#39;t export projects&#39;&quot;</span>).<span class="ident">conflicts_with</span>(<span class="string">&quot;projects&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;-f --force &#39;Overwrite existing files&#39;&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;-c --compact &#39;Don&#39;t pretty-print exported JSON&#39;&quot;</span>))
+            .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;-a --auth [AUTH_TOKEN] &#39;GitHub OAuth2 token. Required for projects&#39;&quot;</span>))
             .<span class="ident">get_matches</span>();
 
         <span class="kw">let</span> <span class="ident">force</span> <span class="op">=</span> <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;force&quot;</span>);
         <span class="kw">let</span> <span class="ident">slug</span>: <span class="ident">RepoSlug</span> <span class="op">=</span> <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;REPO_SLUG&quot;</span>).<span class="ident">unwrap</span>().<span class="ident">parse</span>().<span class="ident">unwrap</span>();
         <span class="kw">let</span> <span class="ident">slug_prefix</span> <span class="op">=</span> <span class="ident">slug</span>.<span class="ident">filename</span>();
+        <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;auth&quot;</span>).<span class="ident">map</span>(<span class="ident">String</span>::<span class="ident">from</span>);
         <span class="ident">Options</span> {
             <span class="ident">slug</span>: <span class="ident">slug</span>,
             <span class="ident">out_issues</span>: <span class="ident">Options</span>::<span class="ident">out_file</span>(<span class="ident">force</span>, <span class="kw-2">&amp;</span><span class="ident">slug_prefix</span>, <span class="string">&quot;issues&quot;</span>, <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-issues&quot;</span>), <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;issues&quot;</span>)),
@@ -275,7 +315,13 @@
                                               <span class="string">&quot;milestones&quot;</span>,
                                               <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-milestones&quot;</span>),
                                               <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;milestones&quot;</span>)),
+            <span class="ident">out_projects</span>: <span class="kw">if</span> <span class="ident">token</span>.<span class="ident">is_some</span>() {
+                <span class="ident">Options</span>::<span class="ident">out_file</span>(<span class="ident">force</span>, <span class="kw-2">&amp;</span><span class="ident">slug_prefix</span>, <span class="string">&quot;projects&quot;</span>, <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-projects&quot;</span>), <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;projects&quot;</span>))
+            } <span class="kw">else</span> {
+                <span class="prelude-val">None</span>
+            },
             <span class="ident">compact</span>: <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;compact&quot;</span>),
+            <span class="ident">github_token</span>: <span class="ident">token</span>,
         }
     }
 

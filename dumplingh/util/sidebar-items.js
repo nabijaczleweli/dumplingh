@@ -1,1 +1,1 @@
-initSidebarItems({"fn":[["uppercase_first","Uppercase the first character of the supplied string."]],"static":[["USER_AGENT","App name and version to use with User-Agent request header."]]});
+initSidebarItems({"fn":[["uppercase_first","Uppercase the first character of the supplied string."]],"static":[["USER_AGENT","App name and version to use with User-Agent request header."]],"struct":[["GITHUB_PROJECTS_ACCEPT_MIMETYPE","Custom media type for the `Accept` header to get projects from the GH API."]]});
