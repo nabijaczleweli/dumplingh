@@ -139,6 +139,25 @@ Default: `\./<REPO_SLUG>\-projects\.json`\.
 .IP "" 0
 .
 .P
+\-\-comments \fICOMMENTS_DIR\fR
+.
+.IP "" 4
+.
+.nf
+
+Directory to export comments to\.
+
+Directory must either not exist or \-\-force must be specified\.
+
+Exclusive with \-\-no\-comments\.
+
+Default: `\./<REPO_SLUG>\-comments`\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
 \-\-no\-issues
 .
 .IP "" 4
@@ -198,6 +217,19 @@ Don\'t export milestones\.
 .nf
 
 Don\'t export projects\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\-\-no\-comments
+.
+.IP "" 4
+.
+.nf
+
+Don\'t export comments\.
 .
 .fi
 .
