@@ -42,6 +42,39 @@ Exit values and possible errors:
 
     Default: ./<REPO_SLUG>-pulls.json.
 
+  -l --labels <LABELS_FILE>
+
+    File to export labels to.
+
+    File must either not exist or --force must be specified.
+
+    Exclusive with --no-labels.
+
+    Default: `./<REPO_SLUG>-labels.json`.
+
+  -m --milestones <MILESTONES_FILE>
+
+    File to export milestones to.
+
+    File must either not exist or --force must be specified.
+
+    Exclusive with --no-milestones.
+
+    Default: `./<REPO_SLUG>-milestones.json`.
+
+  --projects <PROJECTS_FILE>
+
+    File to export projects to.
+
+    File must either not exist or --force must be specified.
+
+    Exclusive with --no-projects.
+
+    Requires --auth, since GitHub fails on unauthorised requests to
+    experimental API endpoints.
+
+    Default: `./<REPO_SLUG>-projects.json`.
+
   --no-issues
 
     Don't export issues.
@@ -50,6 +83,18 @@ Exit values and possible errors:
 
     Don't export pull requests.
 
+  --no-labels
+
+    Don't export labels.
+
+  --no-milestones
+
+    Don't export milestones.
+
+  --no-projects
+
+    Don't export projects.
+
   -f --force
 
     Allow for overriding <ISSUES_FILE> and <PULLS_FILE>.
@@ -57,6 +102,14 @@ Exit values and possible errors:
   -c --compact
 
     Compact-print, rather than pretty-print the exported issues/pull requests.
+
+  -a --auth [OAUTH2_TOKEN]
+
+    Token to authenticate to GitHub with.
+
+    Recommended for more requests.
+
+    Required for --projects.
 
 ## AUTHOR
 

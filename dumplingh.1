@@ -79,6 +79,66 @@ Default: \./<REPO_SLUG>\-pulls\.json\.
 .IP "" 0
 .
 .P
+\-l \-\-labels \fILABELS_FILE\fR
+.
+.IP "" 4
+.
+.nf
+
+File to export labels to\.
+
+File must either not exist or \-\-force must be specified\.
+
+Exclusive with \-\-no\-labels\.
+
+Default: `\./<REPO_SLUG>\-labels\.json`\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\-m \-\-milestones \fIMILESTONES_FILE\fR
+.
+.IP "" 4
+.
+.nf
+
+File to export milestones to\.
+
+File must either not exist or \-\-force must be specified\.
+
+Exclusive with \-\-no\-milestones\.
+
+Default: `\./<REPO_SLUG>\-milestones\.json`\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\-\-projects \fIPROJECTS_FILE\fR
+.
+.IP "" 4
+.
+.nf
+
+File to export projects to\.
+
+File must either not exist or \-\-force must be specified\.
+
+Exclusive with \-\-no\-projects\.
+
+Requires \-\-auth, since GitHub fails on unauthorised requests to
+experimental API endpoints\.
+
+Default: `\./<REPO_SLUG>\-projects\.json`\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
 \-\-no\-issues
 .
 .IP "" 4
@@ -105,6 +165,45 @@ Don\'t export pull requests\.
 .IP "" 0
 .
 .P
+\-\-no\-labels
+.
+.IP "" 4
+.
+.nf
+
+Don\'t export labels\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\-\-no\-milestones
+.
+.IP "" 4
+.
+.nf
+
+Don\'t export milestones\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\-\-no\-projects
+.
+.IP "" 4
+.
+.nf
+
+Don\'t export projects\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
 \-f \-\-force
 .
 .IP "" 4
@@ -125,6 +224,23 @@ Allow for overriding <ISSUES_FILE> and <PULLS_FILE>\.
 .nf
 
 Compact\-print, rather than pretty\-print the exported issues/pull requests\.
+.
+.fi
+.
+.IP "" 0
+.
+.P
+\-a \-\-auth [OAUTH2_TOKEN]
+.
+.IP "" 4
+.
+.nf
+
+Token to authenticate to GitHub with\.
+
+Recommended for more requests\.
+
+Required for \-\-projects\.
 .
 .fi
 .
