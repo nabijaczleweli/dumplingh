@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.11.6/src/client/mod.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.11.7/src/client/mod.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>mod.rs.html -- source</title>
@@ -522,6 +522,41 @@
 <span id="477">477</span>
 <span id="478">478</span>
 <span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
 </pre><pre class="rust ">
 <span class="doccomment">//! HTTP Client</span>
 
@@ -545,7 +580,7 @@
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">tokio_service</span>::<span class="ident">Service</span>;
 
 <span class="kw">use</span> <span class="ident">header</span>::{<span class="ident">Headers</span>, <span class="ident">Host</span>};
-<span class="kw">use</span> <span class="ident">proto</span>::{<span class="self">self</span>, <span class="ident">TokioBody</span>};
+<span class="kw">use</span> <span class="ident">proto</span>::{<span class="self">self</span>, <span class="ident">RequestHead</span>, <span class="ident">TokioBody</span>};
 <span class="kw">use</span> <span class="ident">proto</span>::<span class="ident">response</span>;
 <span class="kw">use</span> <span class="ident">proto</span>::<span class="ident">request</span>;
 <span class="kw">use</span> <span class="ident">method</span>::<span class="ident">Method</span>;
@@ -570,7 +605,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="ident">C</span>, <span class="ident">B</span> <span class="op">=</span> <span class="ident">proto</span>::<span class="ident">Body</span><span class="op">&gt;</span> {
     <span class="ident">connector</span>: <span class="ident">C</span>,
     <span class="ident">handle</span>: <span class="ident">Handle</span>,
-    <span class="ident">pool</span>: <span class="ident">Pool</span><span class="op">&lt;</span><span class="ident">TokioClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;&gt;</span>,
+    <span class="ident">pool</span>: <span class="ident">Dispatch</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span> <span class="ident">Client</span><span class="op">&lt;</span><span class="ident">HttpConnector</span>, <span class="ident">proto</span>::<span class="ident">Body</span><span class="op">&gt;</span> {
@@ -618,7 +653,11 @@
         <span class="ident">Client</span> {
             <span class="ident">connector</span>: <span class="ident">config</span>.<span class="ident">connector</span>,
             <span class="ident">handle</span>: <span class="ident">handle</span>.<span class="ident">clone</span>(),
-            <span class="ident">pool</span>: <span class="ident">Pool</span>::<span class="ident">new</span>(<span class="ident">config</span>.<span class="ident">keep_alive</span>, <span class="ident">config</span>.<span class="ident">keep_alive_timeout</span>),
+            <span class="ident">pool</span>: <span class="kw">if</span> <span class="ident">config</span>.<span class="ident">no_proto</span> {
+                <span class="ident">Dispatch</span>::<span class="ident">Hyper</span>(<span class="ident">Pool</span>::<span class="ident">new</span>(<span class="ident">config</span>.<span class="ident">keep_alive</span>, <span class="ident">config</span>.<span class="ident">keep_alive_timeout</span>))
+            } <span class="kw">else</span> {
+                <span class="ident">Dispatch</span>::<span class="ident">Proto</span>(<span class="ident">Pool</span>::<span class="ident">new</span>(<span class="ident">config</span>.<span class="ident">keep_alive</span>, <span class="ident">config</span>.<span class="ident">keep_alive_timeout</span>))
+            }
         }
     }
 }
@@ -712,48 +751,100 @@
         <span class="ident">headers</span>.<span class="ident">extend</span>(<span class="ident">head</span>.<span class="ident">headers</span>.<span class="ident">iter</span>());
         <span class="ident">head</span>.<span class="ident">headers</span> <span class="op">=</span> <span class="ident">headers</span>;
 
-        <span class="kw">let</span> <span class="ident">checkout</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">checkout</span>(<span class="ident">domain</span>.<span class="ident">as_ref</span>());
-        <span class="kw">let</span> <span class="ident">connect</span> <span class="op">=</span> {
-            <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">clone</span>();
-            <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">clone</span>();
-            <span class="kw">let</span> <span class="ident">pool_key</span> <span class="op">=</span> <span class="ident">Rc</span>::<span class="ident">new</span>(<span class="ident">domain</span>.<span class="ident">to_string</span>());
-            <span class="self">self</span>.<span class="ident">connector</span>.<span class="ident">connect</span>(<span class="ident">url</span>)
-                .<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">io</span><span class="op">|</span> {
-                    <span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot</span>::<span class="ident">channel</span>();
-                    <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">HttpClient</span> {
-                        <span class="ident">client_rx</span>: <span class="ident">RefCell</span>::<span class="ident">new</span>(<span class="prelude-val">Some</span>(<span class="ident">rx</span>)),
-                    }.<span class="ident">bind_client</span>(<span class="kw-2">&amp;</span><span class="ident">handle</span>, <span class="ident">io</span>);
-                    <span class="kw">let</span> <span class="ident">pooled</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">pooled</span>(<span class="ident">pool_key</span>, <span class="ident">client</span>);
-                    <span class="ident">drop</span>(<span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">pooled</span>.<span class="ident">clone</span>()));
-                    <span class="ident">pooled</span>
-                })
-        };
+        <span class="kw">match</span> <span class="self">self</span>.<span class="ident">pool</span> {
+            <span class="ident">Dispatch</span>::<span class="ident">Proto</span>(<span class="kw-2">ref</span> <span class="ident">pool</span>) <span class="op">=&gt;</span> {
+                <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;proto_dispatch&quot;</span>);
+                <span class="kw">let</span> <span class="ident">checkout</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">checkout</span>(<span class="ident">domain</span>.<span class="ident">as_ref</span>());
+                <span class="kw">let</span> <span class="ident">connect</span> <span class="op">=</span> {
+                    <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">clone</span>();
+                    <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">clone</span>();
+                    <span class="kw">let</span> <span class="ident">pool_key</span> <span class="op">=</span> <span class="ident">Rc</span>::<span class="ident">new</span>(<span class="ident">domain</span>.<span class="ident">to_string</span>());
+                    <span class="self">self</span>.<span class="ident">connector</span>.<span class="ident">connect</span>(<span class="ident">url</span>)
+                        .<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">io</span><span class="op">|</span> {
+                            <span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot</span>::<span class="ident">channel</span>();
+                            <span class="kw">let</span> <span class="ident">client</span> <span class="op">=</span> <span class="ident">HttpClient</span> {
+                                <span class="ident">client_rx</span>: <span class="ident">RefCell</span>::<span class="ident">new</span>(<span class="prelude-val">Some</span>(<span class="ident">rx</span>)),
+                            }.<span class="ident">bind_client</span>(<span class="kw-2">&amp;</span><span class="ident">handle</span>, <span class="ident">io</span>);
+                            <span class="kw">let</span> <span class="ident">pooled</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">pooled</span>(<span class="ident">pool_key</span>, <span class="ident">client</span>);
+                            <span class="ident">drop</span>(<span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">pooled</span>.<span class="ident">clone</span>()));
+                            <span class="ident">pooled</span>
+                        })
+                };
 
-        <span class="kw">let</span> <span class="ident">race</span> <span class="op">=</span> <span class="ident">checkout</span>.<span class="ident">select</span>(<span class="ident">connect</span>)
-            .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">client</span>, <span class="ident">_work</span>)<span class="op">|</span> <span class="ident">client</span>)
-            .<span class="ident">map_err</span>(<span class="op">|</span>(<span class="ident">e</span>, <span class="ident">_work</span>)<span class="op">|</span> {
-                <span class="comment">// the Pool Checkout cannot error, so the only error</span>
-                <span class="comment">// is from the Connector</span>
-                <span class="comment">// XXX: should wait on the Checkout? Problem is</span>
-                <span class="comment">// that if the connector is failing, it may be that we</span>
-                <span class="comment">// never had a pooled stream at all</span>
-                <span class="ident">e</span>.<span class="ident">into</span>()
-            });
-        <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">race</span>.<span class="ident">and_then</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">client</span><span class="op">|</span> {
-            <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">body</span> {
-                <span class="prelude-val">Some</span>(<span class="ident">body</span>) <span class="op">=&gt;</span> {
-                    <span class="ident">Message</span>::<span class="ident">WithBody</span>(<span class="ident">head</span>, <span class="ident">body</span>.<span class="ident">into</span>())
-                },
-                <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">Message</span>::<span class="ident">WithoutBody</span>(<span class="ident">head</span>),
-            };
-            <span class="ident">client</span>.<span class="ident">call</span>(<span class="ident">msg</span>)
-        });
-        <span class="ident">FutureResponse</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">resp</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">msg</span><span class="op">|</span> {
-            <span class="kw">match</span> <span class="ident">msg</span> {
-                <span class="ident">Message</span>::<span class="ident">WithoutBody</span>(<span class="ident">head</span>) <span class="op">=&gt;</span> <span class="ident">response</span>::<span class="ident">from_wire</span>(<span class="ident">head</span>, <span class="prelude-val">None</span>),
-                <span class="ident">Message</span>::<span class="ident">WithBody</span>(<span class="ident">head</span>, <span class="ident">body</span>) <span class="op">=&gt;</span> <span class="ident">response</span>::<span class="ident">from_wire</span>(<span class="ident">head</span>, <span class="prelude-val">Some</span>(<span class="ident">body</span>.<span class="ident">into</span>())),
+                <span class="kw">let</span> <span class="ident">race</span> <span class="op">=</span> <span class="ident">checkout</span>.<span class="ident">select</span>(<span class="ident">connect</span>)
+                    .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">client</span>, <span class="ident">_work</span>)<span class="op">|</span> <span class="ident">client</span>)
+                    .<span class="ident">map_err</span>(<span class="op">|</span>(<span class="ident">e</span>, <span class="ident">_work</span>)<span class="op">|</span> {
+                        <span class="comment">// the Pool Checkout cannot error, so the only error</span>
+                        <span class="comment">// is from the Connector</span>
+                        <span class="comment">// XXX: should wait on the Checkout? Problem is</span>
+                        <span class="comment">// that if the connector is failing, it may be that we</span>
+                        <span class="comment">// never had a pooled stream at all</span>
+                        <span class="ident">e</span>.<span class="ident">into</span>()
+                    });
+                <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">race</span>.<span class="ident">and_then</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">client</span><span class="op">|</span> {
+                    <span class="kw">let</span> <span class="ident">msg</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">body</span> {
+                        <span class="prelude-val">Some</span>(<span class="ident">body</span>) <span class="op">=&gt;</span> {
+                            <span class="ident">Message</span>::<span class="ident">WithBody</span>(<span class="ident">head</span>, <span class="ident">body</span>.<span class="ident">into</span>())
+                        },
+                        <span class="prelude-val">None</span> <span class="op">=&gt;</span> <span class="ident">Message</span>::<span class="ident">WithoutBody</span>(<span class="ident">head</span>),
+                    };
+                    <span class="ident">client</span>.<span class="ident">call</span>(<span class="ident">msg</span>)
+                });
+                <span class="ident">FutureResponse</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">resp</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">msg</span><span class="op">|</span> {
+                    <span class="kw">match</span> <span class="ident">msg</span> {
+                        <span class="ident">Message</span>::<span class="ident">WithoutBody</span>(<span class="ident">head</span>) <span class="op">=&gt;</span> <span class="ident">response</span>::<span class="ident">from_wire</span>(<span class="ident">head</span>, <span class="prelude-val">None</span>),
+                        <span class="ident">Message</span>::<span class="ident">WithBody</span>(<span class="ident">head</span>, <span class="ident">body</span>) <span class="op">=&gt;</span> <span class="ident">response</span>::<span class="ident">from_wire</span>(<span class="ident">head</span>, <span class="prelude-val">Some</span>(<span class="ident">body</span>.<span class="ident">into</span>())),
+                    }
+                })))
+            },
+            <span class="ident">Dispatch</span>::<span class="ident">Hyper</span>(<span class="kw-2">ref</span> <span class="ident">pool</span>) <span class="op">=&gt;</span> {
+                <span class="macro">trace</span><span class="macro">!</span>(<span class="string">&quot;no_proto dispatch&quot;</span>);
+                <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">Sink</span>;
+                <span class="kw">use</span> <span class="ident">futures</span>::<span class="ident">sync</span>::{<span class="ident">mpsc</span>, <span class="ident">oneshot</span>};
+
+                <span class="kw">let</span> <span class="ident">checkout</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">checkout</span>(<span class="ident">domain</span>.<span class="ident">as_ref</span>());
+                <span class="kw">let</span> <span class="ident">connect</span> <span class="op">=</span> {
+                    <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">clone</span>();
+                    <span class="kw">let</span> <span class="ident">pool</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">clone</span>();
+                    <span class="kw">let</span> <span class="ident">pool_key</span> <span class="op">=</span> <span class="ident">Rc</span>::<span class="ident">new</span>(<span class="ident">domain</span>.<span class="ident">to_string</span>());
+                    <span class="self">self</span>.<span class="ident">connector</span>.<span class="ident">connect</span>(<span class="ident">url</span>)
+                        .<span class="ident">map</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">io</span><span class="op">|</span> {
+                            <span class="kw">let</span> (<span class="ident">tx</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">mpsc</span>::<span class="ident">channel</span>(<span class="number">1</span>);
+                            <span class="kw">let</span> <span class="ident">pooled</span> <span class="op">=</span> <span class="ident">pool</span>.<span class="ident">pooled</span>(<span class="ident">pool_key</span>, <span class="ident">RefCell</span>::<span class="ident">new</span>(<span class="ident">tx</span>));
+                            <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="ident">proto</span>::<span class="ident">Conn</span>::<span class="op">&lt;</span>_, _, <span class="ident">proto</span>::<span class="ident">ClientTransaction</span>, _<span class="op">&gt;</span>::<span class="ident">new</span>(<span class="ident">io</span>, <span class="ident">pooled</span>.<span class="ident">clone</span>());
+                            <span class="kw">let</span> <span class="ident">dispatch</span> <span class="op">=</span> <span class="ident">proto</span>::<span class="ident">dispatch</span>::<span class="ident">Dispatcher</span>::<span class="ident">new</span>(<span class="ident">proto</span>::<span class="ident">dispatch</span>::<span class="ident">Client</span>::<span class="ident">new</span>(<span class="ident">rx</span>), <span class="ident">conn</span>);
+                            <span class="ident">handle</span>.<span class="ident">spawn</span>(<span class="ident">dispatch</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">err</span><span class="op">|</span> <span class="macro">error</span><span class="macro">!</span>(<span class="string">&quot;no_proto error: {}&quot;</span>, <span class="ident">err</span>)));
+                            <span class="ident">pooled</span>
+                        })
+                };
+
+                <span class="kw">let</span> <span class="ident">race</span> <span class="op">=</span> <span class="ident">checkout</span>.<span class="ident">select</span>(<span class="ident">connect</span>)
+                    .<span class="ident">map</span>(<span class="op">|</span>(<span class="ident">client</span>, <span class="ident">_work</span>)<span class="op">|</span> <span class="ident">client</span>)
+                    .<span class="ident">map_err</span>(<span class="op">|</span>(<span class="ident">e</span>, <span class="ident">_work</span>)<span class="op">|</span> {
+                        <span class="comment">// the Pool Checkout cannot error, so the only error</span>
+                        <span class="comment">// is from the Connector</span>
+                        <span class="comment">// XXX: should wait on the Checkout? Problem is</span>
+                        <span class="comment">// that if the connector is failing, it may be that we</span>
+                        <span class="comment">// never had a pooled stream at all</span>
+                        <span class="ident">e</span>.<span class="ident">into</span>()
+                    });
+
+                <span class="kw">let</span> <span class="ident">resp</span> <span class="op">=</span> <span class="ident">race</span>.<span class="ident">and_then</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">client</span><span class="op">|</span> {
+                    <span class="kw">let</span> (<span class="ident">callback</span>, <span class="ident">rx</span>) <span class="op">=</span> <span class="ident">oneshot</span>::<span class="ident">channel</span>();
+                    <span class="ident">client</span>.<span class="ident">borrow_mut</span>().<span class="ident">start_send</span>((<span class="ident">head</span>, <span class="ident">body</span>, <span class="ident">callback</span>)).<span class="ident">unwrap</span>();
+                    <span class="ident">rx</span>.<span class="ident">then</span>(<span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
+                        <span class="kw">match</span> <span class="ident">res</span> {
+                            <span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(<span class="ident">res</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident">res</span>),
+                            <span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(<span class="ident">err</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>),
+                            <span class="prelude-val">Err</span>(_) <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;dispatch dropped without returning error&quot;</span>),
+                        }
+                    })
+                });
+
+                <span class="ident">FutureResponse</span>(<span class="ident">Box</span>::<span class="ident">new</span>(<span class="ident">resp</span>))
+
             }
-        })))
+        }
     }
 
 }
@@ -763,7 +854,10 @@
         <span class="ident">Client</span> {
             <span class="ident">connector</span>: <span class="self">self</span>.<span class="ident">connector</span>.<span class="ident">clone</span>(),
             <span class="ident">handle</span>: <span class="self">self</span>.<span class="ident">handle</span>.<span class="ident">clone</span>(),
-            <span class="ident">pool</span>: <span class="self">self</span>.<span class="ident">pool</span>.<span class="ident">clone</span>(),
+            <span class="ident">pool</span>: <span class="kw">match</span> <span class="self">self</span>.<span class="ident">pool</span> {
+                <span class="ident">Dispatch</span>::<span class="ident">Proto</span>(<span class="kw-2">ref</span> <span class="ident">pool</span>) <span class="op">=&gt;</span> <span class="ident">Dispatch</span>::<span class="ident">Proto</span>(<span class="ident">pool</span>.<span class="ident">clone</span>()),
+                <span class="ident">Dispatch</span>::<span class="ident">Hyper</span>(<span class="kw-2">ref</span> <span class="ident">pool</span>) <span class="op">=&gt;</span> <span class="ident">Dispatch</span>::<span class="ident">Hyper</span>(<span class="ident">pool</span>.<span class="ident">clone</span>()),
+            }
         }
     }
 }
@@ -774,10 +868,16 @@
     }
 }
 
-<span class="kw">type</span> <span class="ident">TokioClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">ClientProxy</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span><span class="ident">proto</span>::<span class="ident">RequestHead</span>, <span class="ident">B</span><span class="op">&gt;</span>, <span class="ident">Message</span><span class="op">&lt;</span><span class="ident">proto</span>::<span class="ident">ResponseHead</span>, <span class="ident">TokioBody</span><span class="op">&gt;</span>, ::<span class="ident">Error</span><span class="op">&gt;</span>;
+<span class="kw">type</span> <span class="ident">ProtoClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">ClientProxy</span><span class="op">&lt;</span><span class="ident">Message</span><span class="op">&lt;</span><span class="ident">RequestHead</span>, <span class="ident">B</span><span class="op">&gt;</span>, <span class="ident">Message</span><span class="op">&lt;</span><span class="ident">proto</span>::<span class="ident">ResponseHead</span>, <span class="ident">TokioBody</span><span class="op">&gt;</span>, ::<span class="ident">Error</span><span class="op">&gt;</span>;
+<span class="kw">type</span> <span class="ident">HyperClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">RefCell</span><span class="op">&lt;</span>::<span class="ident">futures</span>::<span class="ident">sync</span>::<span class="ident">mpsc</span>::<span class="ident">Sender</span><span class="op">&lt;</span>(<span class="ident">RequestHead</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>, ::<span class="ident">futures</span>::<span class="ident">sync</span>::<span class="ident">oneshot</span>::<span class="ident">Sender</span><span class="op">&lt;</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span>::<span class="ident">Response</span><span class="op">&gt;&gt;</span>)<span class="op">&gt;&gt;</span>;
+
+<span class="kw">enum</span> <span class="ident">Dispatch</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
+    <span class="ident">Proto</span>(<span class="ident">Pool</span><span class="op">&lt;</span><span class="ident">ProtoClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;&gt;</span>),
+    <span class="ident">Hyper</span>(<span class="ident">Pool</span><span class="op">&lt;</span><span class="ident">HyperClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;&gt;</span>),
+}
 
 <span class="kw">struct</span> <span class="ident">HttpClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span> {
-    <span class="ident">client_rx</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">oneshot</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">Pooled</span><span class="op">&lt;</span><span class="ident">TokioClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;&gt;</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">client_rx</span>: <span class="ident">RefCell</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">oneshot</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">Pooled</span><span class="op">&lt;</span><span class="ident">ProtoClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;&gt;</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>,
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="ident">ClientProto</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">HttpClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>
@@ -790,7 +890,7 @@
     <span class="kw">type</span> <span class="ident">Response</span> <span class="op">=</span> <span class="ident">proto</span>::<span class="ident">ResponseHead</span>;
     <span class="kw">type</span> <span class="ident">ResponseBody</span> <span class="op">=</span> <span class="ident">proto</span>::<span class="ident">Chunk</span>;
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> ::<span class="ident">Error</span>;
-    <span class="kw">type</span> <span class="ident">Transport</span> <span class="op">=</span> <span class="ident">proto</span>::<span class="ident">Conn</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">B</span>::<span class="ident">Item</span>, <span class="ident">proto</span>::<span class="ident">ClientTransaction</span>, <span class="ident">Pooled</span><span class="op">&lt;</span><span class="ident">TokioClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Transport</span> <span class="op">=</span> <span class="ident">proto</span>::<span class="ident">Conn</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">B</span>::<span class="ident">Item</span>, <span class="ident">proto</span>::<span class="ident">ClientTransaction</span>, <span class="ident">Pooled</span><span class="op">&lt;</span><span class="ident">ProtoClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">BindTransport</span> <span class="op">=</span> <span class="ident">BindingClient</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">B</span><span class="op">&gt;</span>;
 
     <span class="kw">fn</span> <span class="ident">bind_transport</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">io</span>: <span class="ident">T</span>) <span class="op">-&gt;</span> <span class="self">Self</span>::<span class="ident">BindTransport</span> {
@@ -802,7 +902,7 @@
 }
 
 <span class="kw">struct</span> <span class="ident">BindingClient</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">B</span><span class="op">&gt;</span> {
-    <span class="ident">rx</span>: <span class="ident">oneshot</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">Pooled</span><span class="op">&lt;</span><span class="ident">TokioClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>,
+    <span class="ident">rx</span>: <span class="ident">oneshot</span>::<span class="ident">Receiver</span><span class="op">&lt;</span><span class="ident">Pooled</span><span class="op">&lt;</span><span class="ident">ProtoClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>,
     <span class="ident">io</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
 }
 
@@ -811,7 +911,7 @@
       <span class="ident">B</span>: <span class="ident">Stream</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">=</span>::<span class="ident">Error</span><span class="op">&gt;</span>,
       <span class="ident">B</span>::<span class="ident">Item</span>: <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span>,
 {
-    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">proto</span>::<span class="ident">Conn</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">B</span>::<span class="ident">Item</span>, <span class="ident">proto</span>::<span class="ident">ClientTransaction</span>, <span class="ident">Pooled</span><span class="op">&lt;</span><span class="ident">TokioClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">proto</span>::<span class="ident">Conn</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">B</span>::<span class="ident">Item</span>, <span class="ident">proto</span>::<span class="ident">ClientTransaction</span>, <span class="ident">Pooled</span><span class="op">&lt;</span><span class="ident">ProtoClient</span><span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;&gt;</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">io</span>::<span class="ident">Error</span>;
 
     <span class="kw">fn</span> <span class="ident">poll</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Poll</span><span class="op">&lt;</span><span class="self">Self</span>::<span class="ident">Item</span>, <span class="self">Self</span>::<span class="ident">Error</span><span class="op">&gt;</span> {
@@ -834,6 +934,7 @@
     <span class="ident">keep_alive_timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>,
     <span class="comment">//TODO: make use of max_idle config</span>
     <span class="ident">max_idle</span>: <span class="ident">usize</span>,
+    <span class="ident">no_proto</span>: <span class="ident">bool</span>,
 }
 
 <span class="doccomment">/// Phantom type used to signal that `Config` should create a `HttpConnector`.</span>
@@ -849,6 +950,7 @@
             <span class="ident">keep_alive</span>: <span class="bool-val">true</span>,
             <span class="ident">keep_alive_timeout</span>: <span class="prelude-val">Some</span>(<span class="ident">Duration</span>::<span class="ident">from_secs</span>(<span class="number">90</span>)),
             <span class="ident">max_idle</span>: <span class="number">5</span>,
+            <span class="ident">no_proto</span>: <span class="bool-val">false</span>,
         }
     }
 }
@@ -872,6 +974,7 @@
             <span class="ident">keep_alive</span>: <span class="self">self</span>.<span class="ident">keep_alive</span>,
             <span class="ident">keep_alive_timeout</span>: <span class="self">self</span>.<span class="ident">keep_alive_timeout</span>,
             <span class="ident">max_idle</span>: <span class="self">self</span>.<span class="ident">max_idle</span>,
+            <span class="ident">no_proto</span>: <span class="self">self</span>.<span class="ident">no_proto</span>,
         }
     }
 
@@ -885,6 +988,7 @@
             <span class="ident">keep_alive</span>: <span class="self">self</span>.<span class="ident">keep_alive</span>,
             <span class="ident">keep_alive_timeout</span>: <span class="self">self</span>.<span class="ident">keep_alive_timeout</span>,
             <span class="ident">max_idle</span>: <span class="self">self</span>.<span class="ident">max_idle</span>,
+            <span class="ident">no_proto</span>: <span class="self">self</span>.<span class="ident">no_proto</span>,
         }
     }
 
@@ -918,6 +1022,13 @@
         self
     }
     */</span>
+
+    <span class="doccomment">/// Disable tokio-proto internal usage.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">no_proto</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">C</span>, <span class="ident">B</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">no_proto</span> <span class="op">=</span> <span class="bool-val">true</span>;
+        <span class="self">self</span>
+    }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">C</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">C</span>, <span class="ident">B</span><span class="op">&gt;</span>
@@ -956,51 +1067,10 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">C</span>: <span class="ident">Clone</span>, <span class="ident">B</span><span class="op">&gt;</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">C</span>, <span class="ident">B</span><span class="op">&gt;</span> {
     <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Config</span><span class="op">&lt;</span><span class="ident">C</span>, <span class="ident">B</span><span class="op">&gt;</span> {
         <span class="ident">Config</span> {
-            <span class="ident">_body_type</span>: <span class="ident">PhantomData</span>::<span class="op">&lt;</span><span class="ident">B</span><span class="op">&gt;</span>,
             <span class="ident">connector</span>: <span class="self">self</span>.<span class="ident">connector</span>.<span class="ident">clone</span>(),
-            <span class="ident">keep_alive</span>: <span class="self">self</span>.<span class="ident">keep_alive</span>,
-            <span class="ident">keep_alive_timeout</span>: <span class="self">self</span>.<span class="ident">keep_alive_timeout</span>,
-            <span class="ident">max_idle</span>: <span class="self">self</span>.<span class="ident">max_idle</span>,
+            .. <span class="kw-2">*</span><span class="self">self</span>
         }
     }
-}
-
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="comment">/*
-    use std::io::Read;
-    use header::Server;
-    use super::{Client};
-    use super::pool::Pool;
-    use Url;
-
-    mock_connector!(Issue640Connector {
-        b&quot;HTTP/1.1 200 OK\r\nContent-Length: 3\r\n\r\n&quot;,
-        b&quot;GET&quot;,
-        b&quot;HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\n&quot;,
-        b&quot;HEAD&quot;,
-        b&quot;HTTP/1.1 200 OK\r\nContent-Length: 4\r\n\r\n&quot;,
-        b&quot;POST&quot;
-    });
-
-    // see issue #640
-    #[test]
-    fn test_head_response_body_keep_alive() {
-        let client = Client::with_connector(Pool::with_connector(Default::default(), Issue640Connector));
-
-        let mut s = String::new();
-        client.get(&quot;http://127.0.0.1&quot;).send().unwrap().read_to_string(&amp;mut s).unwrap();
-        assert_eq!(s, &quot;GET&quot;);
-
-        let mut s = String::new();
-        client.head(&quot;http://127.0.0.1&quot;).send().unwrap().read_to_string(&amp;mut s).unwrap();
-        assert_eq!(s, &quot;&quot;);
-
-        let mut s = String::new();
-        client.post(&quot;http://127.0.0.1&quot;).send().unwrap().read_to_string(&amp;mut s).unwrap();
-        assert_eq!(s, &quot;POST&quot;);
-    }
-    */</span>
 }
 </pre>
 </section>

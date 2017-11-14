@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.11.6/src/header/common/accept.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.11.7/src/header/common/accept.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>accept.rs.html -- source</title>
@@ -188,6 +188,8 @@
 <span id="143">143</span>
 <span id="144">144</span>
 <span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
 </pre><pre class="rust ">
 <span class="kw">use</span> <span class="ident">mime</span>::{<span class="self">self</span>, <span class="ident">Mime</span>};
 
@@ -203,7 +205,8 @@
     <span class="doccomment">/// in-line image</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # ABNF</span>
-    <span class="doccomment">/// ```plain</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```text</span>
     <span class="doccomment">/// Accept = #( media-range [ accept-params ] )</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// media-range    = ( &quot;*/*&quot;</span>
@@ -231,6 +234,7 @@
     <span class="doccomment">///     ])</span>
     <span class="doccomment">/// );</span>
     <span class="doccomment">/// ```</span>
+    <span class="doccomment">///</span>
     <span class="doccomment">/// ```</span>
     <span class="doccomment">/// use hyper::header::{Headers, Accept, qitem};</span>
     <span class="doccomment">/// use hyper::mime;</span>

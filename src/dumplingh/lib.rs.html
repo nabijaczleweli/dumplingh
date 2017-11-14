@@ -114,6 +114,8 @@
 <span id="69">69</span>
 <span id="70">70</span>
 <span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
 </pre><pre class="rust ">
 <span class="doccomment">//! Issue/PR exporter for GitHub.</span>
 <span class="doccomment">//!</span>
@@ -160,12 +162,14 @@
 <span class="doccomment">//! | --labels &amp;lt;LABELS_FILE&amp;gt;         | File to export labels to, or `./&lt;slug&gt;-labels.json` by default.          |</span>
 <span class="doccomment">//! | --milestones &amp;lt;MILESTONES_FILE&amp;gt; | File to export milestones to, or `./&lt;slug&gt;-milestones.json` by default.  |</span>
 <span class="doccomment">//! | --projects &amp;lt;PROJECTS_FILE&amp;gt;     | File to export projects to, or `./&lt;slug&gt;-projects.json` by default.      |</span>
+<span class="doccomment">//! | --comments &amp;lt;COMMENTS_DIR&amp;gt;      | Directory to export comments to, or `./&lt;slug&gt;-comments` by default.      |</span>
 <span class="doccomment">//! | --auth [AUTH_TOKEN]                  | GitHub OAuth2 token, required for projects.                              |</span>
 <span class="doccomment">//! | --no-issues                          | Don&#39;t export issues.                                                     |</span>
 <span class="doccomment">//! | --no-pulls                           | Don&#39;t export pull requests.                                              |</span>
 <span class="doccomment">//! | --no-labels                          | Don&#39;t export labels.                                                     |</span>
 <span class="doccomment">//! | --no-milestones                      | Don&#39;t export milestones.                                                 |</span>
 <span class="doccomment">//! | --no-projects                        | Don&#39;t export projects.                                                   |</span>
+<span class="doccomment">//! | --no-comments                        | Don&#39;t export comments.                                                   |</span>
 <span class="doccomment">//! | --force                              | Override existing files.                                                 |</span>
 <span class="doccomment">//! | --compact                            | Don&#39;t pretty-print exported JSON.                                        |</span>
 

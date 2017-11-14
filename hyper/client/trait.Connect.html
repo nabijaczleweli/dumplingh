@@ -48,7 +48,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../../src/hyper/client/connect.rs.html#21-28' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../../src/hyper/client/connect.rs.html#25-32' title='goto source code'>[src]</a></span></h1>
 <pre class='rust trait'>pub trait Connect: <a class="trait" href="../../hyper/server/trait.Service.html" title="trait hyper::server::Service">Service</a>&lt;Request = <a class="struct" href="../../hyper/struct.Uri.html" title="struct hyper::Uri">Uri</a>, Error = <a class="struct" href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html" title="struct std::io::error::Error">Error</a>&gt; + 'static {
     type <a href='#associatedtype.Output' class="type">Output</a>: <a class="trait" href="../../tokio_io/trait.AsyncRead.html" title="trait tokio_io::AsyncRead">AsyncRead</a> + <a class="trait" href="../../tokio_io/trait.AsyncWrite.html" title="trait tokio_io::AsyncWrite">AsyncWrite</a> + 'static;
     type <a href='#associatedtype.Future' class="type">Future</a>: <a class="trait" href="../../futures/future/trait.Future.html" title="trait futures::future::Future">Future</a>&lt;Item = Self::<a class="type" href="../../hyper/client/trait.Connect.html#associatedtype.Output" title="type hyper::client::Connect::Output">Output</a>, Error = <a class="struct" href="https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html" title="struct std::io::error::Error">Error</a>&gt; + 'static;

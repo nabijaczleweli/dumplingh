@@ -211,6 +211,36 @@
 <span id="166">166</span>
 <span id="167">167</span>
 <span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
 </pre><pre class="rust ">
 <span class="doccomment">//! This module contains the configuration of the application.</span>
 <span class="doccomment">//!</span>
@@ -257,6 +287,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Default: `&quot;./&lt;slug&gt;-projects.json&quot;`.</span>
     <span class="kw">pub</span> <span class="ident">out_projects</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">PathBuf</span>)<span class="op">&gt;</span>,
+    <span class="doccomment">/// Directory to write comments to, if any.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Default: `&quot;./&lt;slug&gt;-comments/&quot;`.</span>
+    <span class="kw">pub</span> <span class="ident">out_comments</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">PathBuf</span>)<span class="op">&gt;</span>,
     <span class="doccomment">/// Whether to compact-print, as opposed to pretty-print, exported JSON.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Default: `false`.</span>
@@ -291,11 +325,15 @@
                 .<span class="ident">validator</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">Options</span>::<span class="ident">out_file_validator</span>(<span class="ident">s</span>, <span class="string">&quot;Projects&quot;</span>))
                 .<span class="ident">conflicts_with</span>(<span class="string">&quot;no-projects&quot;</span>)
                 .<span class="ident">requires</span>(<span class="string">&quot;auth&quot;</span>))
+            .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--comments [COMMENTS_DIR] &#39;Directory to write comments to. Default: &lt;slug&gt;-comments/&#39;&quot;</span>)
+                .<span class="ident">validator</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">Options</span>::<span class="ident">out_file_validator</span>(<span class="ident">s</span>, <span class="string">&quot;comments&quot;</span>))
+                .<span class="ident">conflicts_with</span>(<span class="string">&quot;no-comments&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--no-issues &#39;Don&#39;t export issues&#39;&quot;</span>).<span class="ident">conflicts_with</span>(<span class="string">&quot;issues&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--no-pulls &#39;Don&#39;t export pulls&#39;&quot;</span>).<span class="ident">conflicts_with</span>(<span class="string">&quot;pulls&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--no-labels &#39;Don&#39;t export labels&#39;&quot;</span>).<span class="ident">conflicts_with</span>(<span class="string">&quot;labels&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--no-milestones &#39;Don&#39;t export milestones&#39;&quot;</span>).<span class="ident">conflicts_with</span>(<span class="string">&quot;milestones&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--no-projects &#39;Don&#39;t export projects&#39;&quot;</span>).<span class="ident">conflicts_with</span>(<span class="string">&quot;projects&quot;</span>))
+            .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;--no-comments &#39;Don&#39;t export comments&#39;&quot;</span>).<span class="ident">conflicts_with</span>(<span class="string">&quot;comments&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;-f --force &#39;Overwrite existing files&#39;&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;-c --compact &#39;Don&#39;t pretty-print exported JSON&#39;&quot;</span>))
             .<span class="ident">arg</span>(<span class="ident">Arg</span>::<span class="ident">from_usage</span>(<span class="string">&quot;-a --auth [AUTH_TOKEN] &#39;GitHub OAuth2 token. Required for projects&#39;&quot;</span>))
@@ -307,27 +345,49 @@
         <span class="kw">let</span> <span class="ident">token</span> <span class="op">=</span> <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;auth&quot;</span>).<span class="ident">map</span>(<span class="ident">String</span>::<span class="ident">from</span>);
         <span class="ident">Options</span> {
             <span class="ident">slug</span>: <span class="ident">slug</span>,
-            <span class="ident">out_issues</span>: <span class="ident">Options</span>::<span class="ident">out_file</span>(<span class="ident">force</span>, <span class="kw-2">&amp;</span><span class="ident">slug_prefix</span>, <span class="string">&quot;issues&quot;</span>, <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-issues&quot;</span>), <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;issues&quot;</span>)),
-            <span class="ident">out_pull_requests</span>: <span class="ident">Options</span>::<span class="ident">out_file</span>(<span class="ident">force</span>, <span class="kw-2">&amp;</span><span class="ident">slug_prefix</span>, <span class="string">&quot;pulls&quot;</span>, <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-pulls&quot;</span>), <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;pulls&quot;</span>)),
-            <span class="ident">out_labels</span>: <span class="ident">Options</span>::<span class="ident">out_file</span>(<span class="ident">force</span>, <span class="kw-2">&amp;</span><span class="ident">slug_prefix</span>, <span class="string">&quot;labels&quot;</span>, <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-labels&quot;</span>), <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;labels&quot;</span>)),
+            <span class="ident">out_issues</span>: <span class="ident">Options</span>::<span class="ident">out_file</span>(<span class="ident">force</span>,
+                                          <span class="kw-2">&amp;</span><span class="ident">slug_prefix</span>,
+                                          <span class="string">&quot;.json&quot;</span>,
+                                          <span class="string">&quot;issues&quot;</span>,
+                                          <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-issues&quot;</span>),
+                                          <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;issues&quot;</span>)),
+            <span class="ident">out_pull_requests</span>: <span class="ident">Options</span>::<span class="ident">out_file</span>(<span class="ident">force</span>, <span class="kw-2">&amp;</span><span class="ident">slug_prefix</span>, <span class="string">&quot;.json&quot;</span>, <span class="string">&quot;pulls&quot;</span>, <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-pulls&quot;</span>), <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;pulls&quot;</span>)),
+            <span class="ident">out_labels</span>: <span class="ident">Options</span>::<span class="ident">out_file</span>(<span class="ident">force</span>,
+                                          <span class="kw-2">&amp;</span><span class="ident">slug_prefix</span>,
+                                          <span class="string">&quot;.json&quot;</span>,
+                                          <span class="string">&quot;labels&quot;</span>,
+                                          <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-labels&quot;</span>),
+                                          <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;labels&quot;</span>)),
             <span class="ident">out_milestones</span>: <span class="ident">Options</span>::<span class="ident">out_file</span>(<span class="ident">force</span>,
                                               <span class="kw-2">&amp;</span><span class="ident">slug_prefix</span>,
+                                              <span class="string">&quot;.json&quot;</span>,
                                               <span class="string">&quot;milestones&quot;</span>,
                                               <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-milestones&quot;</span>),
                                               <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;milestones&quot;</span>)),
             <span class="ident">out_projects</span>: <span class="kw">if</span> <span class="ident">token</span>.<span class="ident">is_some</span>() {
-                <span class="ident">Options</span>::<span class="ident">out_file</span>(<span class="ident">force</span>, <span class="kw-2">&amp;</span><span class="ident">slug_prefix</span>, <span class="string">&quot;projects&quot;</span>, <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-projects&quot;</span>), <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;projects&quot;</span>))
+                <span class="ident">Options</span>::<span class="ident">out_file</span>(<span class="ident">force</span>,
+                                  <span class="kw-2">&amp;</span><span class="ident">slug_prefix</span>,
+                                  <span class="string">&quot;.json&quot;</span>,
+                                  <span class="string">&quot;projects&quot;</span>,
+                                  <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-projects&quot;</span>),
+                                  <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;projects&quot;</span>))
             } <span class="kw">else</span> {
                 <span class="prelude-val">None</span>
             },
+            <span class="ident">out_comments</span>: <span class="ident">Options</span>::<span class="ident">out_file</span>(<span class="ident">force</span>,
+                                            <span class="kw-2">&amp;</span><span class="ident">slug_prefix</span>,
+                                            <span class="string">&quot;&quot;</span>,
+                                            <span class="string">&quot;comments&quot;</span>,
+                                            <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;no-comments&quot;</span>),
+                                            <span class="ident">matches</span>.<span class="ident">value_of</span>(<span class="string">&quot;comments&quot;</span>)),
             <span class="ident">compact</span>: <span class="ident">matches</span>.<span class="ident">is_present</span>(<span class="string">&quot;compact&quot;</span>),
             <span class="ident">github_token</span>: <span class="ident">token</span>,
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">out_file</span>(<span class="ident">force</span>: <span class="ident">bool</span>, <span class="ident">slug_prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">no_file</span>: <span class="ident">bool</span>, <span class="ident">file_val</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">PathBuf</span>)<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">out_file</span>(<span class="ident">force</span>: <span class="ident">bool</span>, <span class="ident">slug_prefix</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">arg</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">ext</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">no_file</span>: <span class="ident">bool</span>, <span class="ident">file_val</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">String</span>, <span class="ident">PathBuf</span>)<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="op">!</span><span class="ident">no_file</span> {
-            <span class="kw">let</span> <span class="ident">arg_s</span> <span class="op">=</span> <span class="ident">file_val</span>.<span class="ident">map</span>(<span class="ident">String</span>::<span class="ident">from</span>).<span class="ident">unwrap_or_else</span>(<span class="op">||</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;./{}-{}.json&quot;</span>, <span class="ident">slug_prefix</span>, <span class="ident">arg</span>));
+            <span class="kw">let</span> <span class="ident">arg_s</span> <span class="op">=</span> <span class="ident">file_val</span>.<span class="ident">map</span>(<span class="ident">String</span>::<span class="ident">from</span>).<span class="ident">unwrap_or_else</span>(<span class="op">||</span> <span class="macro">format</span><span class="macro">!</span>(<span class="string">&quot;./{}-{}{}&quot;</span>, <span class="ident">slug_prefix</span>, <span class="ident">ext</span>, <span class="ident">arg</span>));
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">arg</span> <span class="op">=</span> <span class="ident">PathBuf</span>::<span class="ident">from</span>(<span class="kw-2">&amp;</span><span class="ident">arg_s</span>);
             <span class="kw">if</span> <span class="op">!</span><span class="ident">force</span> <span class="op">&amp;&amp;</span> <span class="ident">arg</span>.<span class="ident">exists</span>() {
                 <span class="ident">clap</span>::<span class="ident">Error</span> {

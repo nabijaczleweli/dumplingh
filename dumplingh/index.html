@@ -48,7 +48,7 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../src/dumplingh/lib.rs.html#1-71' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../src/dumplingh/lib.rs.html#1-73' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>Issue/PR exporter for GitHub.</p>
 
 <h1 id='dumplingh-as-а-library' class='section-header'><a href='#dumplingh-as-а-library'>dumplingh as а library</a></h1>
@@ -105,6 +105,10 @@ so consult that for more data.</p>
 <td>File to export projects to, or <code>./&lt;slug&gt;-projects.json</code> by default.</td>
 </tr>
 <tr>
+<td>--comments &lt;COMMENTS_DIR&gt;</td>
+<td>Directory to export comments to, or <code>./&lt;slug&gt;-comments</code> by default.</td>
+</tr>
+<tr>
 <td>--auth [AUTH_TOKEN]</td>
 <td>GitHub OAuth2 token, required for projects.</td>
 </tr>
@@ -127,6 +131,10 @@ so consult that for more data.</p>
 <tr>
 <td>--no-projects</td>
 <td>Don&#39;t export projects.</td>
+</tr>
+<tr>
+<td>--no-comments</td>
+<td>Don&#39;t export comments.</td>
 </tr>
 <tr>
 <td>--force</td>

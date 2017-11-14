@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.11.6/src/uri.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/hyper-0.11.7/src/uri.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>uri.rs.html -- source</title>
@@ -819,7 +819,7 @@
                 <span class="ident">query_start</span>: <span class="ident">query</span>,
                 <span class="ident">fragment_start</span>: <span class="ident">fragment</span>,
             })
-        } <span class="kw">else</span> <span class="kw">if</span> (<span class="ident">s</span>.<span class="ident">contains</span>(<span class="string">&quot;/&quot;</span>) <span class="op">||</span> <span class="ident">s</span>.<span class="ident">contains</span>(<span class="string">&quot;?&quot;</span>)) <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">s</span>.<span class="ident">contains</span>(<span class="string">&quot;://&quot;</span>) {
+        } <span class="kw">else</span> <span class="kw">if</span> <span class="ident">s</span>.<span class="ident">contains</span>(<span class="string">&quot;/&quot;</span>) <span class="op">||</span> <span class="ident">s</span>.<span class="ident">contains</span>(<span class="string">&quot;?&quot;</span>) {
             <span class="comment">// last possibility is authority-form, above are illegal characters</span>
             <span class="prelude-val">Err</span>(<span class="ident">UriError</span>(<span class="ident">ErrorKind</span>::<span class="ident">Malformed</span>))
         } <span class="kw">else</span> {

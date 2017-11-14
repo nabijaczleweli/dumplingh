@@ -29,7 +29,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'>Module server</p><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li></ul></div><p class='location'><a href='../index.html'>hyper</a></p><script>window.sidebarCurrent = {name: 'server', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
+        <p class='location'>Module server</p><div class="block items"><ul><li><a href="#structs">Structs</a></li><li><a href="#traits">Traits</a></li><li><a href="#functions">Functions</a></li></ul></div><p class='location'><a href='../index.html'>hyper</a></p><script>window.sidebarCurrent = {name: 'server', ty: 'mod', relpath: '../'};</script><script defer src="../sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -48,13 +48,27 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a class='srclink' href='../../src/hyper/server/mod.rs.html#1-566' title='goto source code'>[src]</a></span></h1>
+               </span><a class='srclink' href='../../src/hyper/server/mod.rs.html#1-754' title='goto source code'>[src]</a></span></h1>
 <div class='docblock'><p>HTTP Server</p>
 
 <p>A <code>Server</code> is created to listen on a port, parse HTTP requests, and hand
 them off to a <code>Service</code>.</p>
 </div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.AddrIncoming.html"
+                                  title='struct hyper::server::AddrIncoming'>AddrIncoming</a></td>
+                           <td class='docblock-short'>
+                                <p>A stream of connections from binding to an address.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Connection.html"
+                                  title='struct hyper::server::Connection'>Connection</a></td>
+                           <td class='docblock-short'>
+                                <p>A future binding a connection with a Service.</p>
+                           </td>
+                       </tr>
                        <tr class=' module-item'>
                            <td><a class="struct" href="struct.Http.html"
                                   title='struct hyper::server::Http'>Http</a></td>
@@ -78,6 +92,13 @@ them off to a <code>Service</code>.</p>
                            </td>
                        </tr>
                        <tr class=' module-item'>
+                           <td><a class="struct" href="struct.Serve.html"
+                                  title='struct hyper::server::Serve'>Serve</a></td>
+                           <td class='docblock-short'>
+                                <p>A stream mapping incoming IOs to new services.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
                            <td><a class="struct" href="struct.Server.html"
                                   title='struct hyper::server::Server'>Server</a></td>
                            <td class='docblock-short'>
@@ -97,6 +118,21 @@ them off to a <code>Service</code>.</p>
                                   title='trait hyper::server::Service'>Service</a></td>
                            <td class='docblock-short'>
                                 <p>An asynchronous function from <code>Request</code> to a <code>Response</code>.</p>
+                           </td>
+                       </tr></table><h2 id='functions' class='section-header'><a href="#functions">Functions</a></h2>
+<table>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.const_service.html"
+                                  title='fn hyper::server::const_service'>const_service</a></td>
+                           <td class='docblock-short'>
+                                <p>Create a <code>NewService</code> by sharing references of `service.</p>
+                           </td>
+                       </tr>
+                       <tr class=' module-item'>
+                           <td><a class="fn" href="fn.service_fn.html"
+                                  title='fn hyper::server::service_fn'>service_fn</a></td>
+                           <td class='docblock-short'>
+                                <p>Create a <code>Service</code> from a function.</p>
                            </td>
                        </tr></table></section>
     <section id='search' class="content hidden"></section>
