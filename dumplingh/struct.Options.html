@@ -10,8 +10,11 @@
     <title>dumplingh::Options - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../normalize.css">
-    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../dark.css">
+    <link rel="stylesheet" type="text/css" href="../main.css" id="themeStyle">
+    <script src="../storage.js"></script>
     
 
     
@@ -28,10 +31,18 @@
     
 
     <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
         
-        <p class='location'>Struct Options</p><div class="block items"><ul><li><a href="#fields">Fields</a></li><li><a href="#methods">Methods</a></li><li><a href="#implementations">Trait Implementations</a></li></ul></div><p class='location'><a href='index.html'>dumplingh</a></p><script>window.sidebarCurrent = {name: 'Options', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'>Struct Options</p><div class="sidebar-elems"><div class="block items"><a class="sidebar-title" href="#fields">Fields</a><div class="sidebar-links"><a href="#structfield.slug">slug</a><a href="#structfield.out_issues">out_issues</a><a href="#structfield.out_pull_requests">out_pull_requests</a><a href="#structfield.out_labels">out_labels</a><a href="#structfield.out_milestones">out_milestones</a><a href="#structfield.out_projects">out_projects</a><a href="#structfield.out_comments">out_comments</a><a href="#structfield.compact">compact</a><a href="#structfield.github_token">github_token</a></div><a class="sidebar-title" href="#methods">Methods</a><div class="sidebar-links"><a href="#method.parse">parse</a></div><a class="sidebar-title" href="#implementations">Trait Implementations</a><div class="sidebar-links"><a href="#impl-Debug">Debug</a><a href="#impl-Clone">Clone</a><a href="#impl-Hash">Hash</a><a href="#impl-PartialEq">PartialEq</a><a href="#impl-Eq">Eq</a><a href="#impl-PartialOrd">PartialOrd</a><a href="#impl-Ord">Ord</a></div></div><p class='location'><a href='index.html'>dumplingh</a></p><script>window.sidebarCurrent = {name: 'Options', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script></div>
     </nav>
 
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../theme.js"></script>
     <nav class="sub">
         <form class="search-form js-only">
             <div class="search-container">
@@ -59,68 +70,68 @@
     pub out_comments: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a>&gt;,
     pub compact: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
     pub github_token: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>&gt;,
-}</pre><div class='docblock'><p>Representation of the application&#39;s all configurable values.</p>
+}</pre><div class='docblock'><p>Representation of the application's all configurable values.</p>
 </div><h2 id='fields' class='fields small-section-header'>
-                       Fields<a href='#fields' class='anchor'></a></h2><span id='structfield.slug' class="structfield">
-                           <span id='slug.v' class='invisible'>
+                       Fields<a href='#fields' class='anchor'></a></h2><span id="structfield.slug" class="structfield small-section-header">
+                           <a href="#structfield.slug" class="anchor field"></a>
+                           <span id="slug.v" class='invisible'>
                            <code>slug: <a class="struct" href="../dumplingh/ops/struct.RepoSlug.html" title="struct dumplingh::ops::RepoSlug">RepoSlug</a></code>
                            </span></span><div class='docblock'><p>Repository slug to export.</p>
-</div><span id='structfield.out_issues' class="structfield">
-                           <span id='out_issues.v' class='invisible'>
+</div><span id="structfield.out_issues" class="structfield small-section-header">
+                           <a href="#structfield.out_issues" class="anchor field"></a>
+                           <span id="out_issues.v" class='invisible'>
                            <code>out_issues: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a>&gt;</code>
                            </span></span><div class='docblock'><p>File to write issues to, if any.</p>
-
 <p>Default: <code>&quot;./&lt;slug&gt;-issues.json&quot;</code>.</p>
-</div><span id='structfield.out_pull_requests' class="structfield">
-                           <span id='out_pull_requests.v' class='invisible'>
+</div><span id="structfield.out_pull_requests" class="structfield small-section-header">
+                           <a href="#structfield.out_pull_requests" class="anchor field"></a>
+                           <span id="out_pull_requests.v" class='invisible'>
                            <code>out_pull_requests: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a>&gt;</code>
                            </span></span><div class='docblock'><p>File to write pull requests to, if any.</p>
-
 <p>Default: <code>&quot;./&lt;slug&gt;-pulls.json&quot;</code>.</p>
-</div><span id='structfield.out_labels' class="structfield">
-                           <span id='out_labels.v' class='invisible'>
+</div><span id="structfield.out_labels" class="structfield small-section-header">
+                           <a href="#structfield.out_labels" class="anchor field"></a>
+                           <span id="out_labels.v" class='invisible'>
                            <code>out_labels: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a>&gt;</code>
                            </span></span><div class='docblock'><p>File to write labels to, if any.</p>
-
 <p>Default: <code>&quot;./&lt;slug&gt;-labels.json&quot;</code>.</p>
-</div><span id='structfield.out_milestones' class="structfield">
-                           <span id='out_milestones.v' class='invisible'>
+</div><span id="structfield.out_milestones" class="structfield small-section-header">
+                           <a href="#structfield.out_milestones" class="anchor field"></a>
+                           <span id="out_milestones.v" class='invisible'>
                            <code>out_milestones: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a>&gt;</code>
                            </span></span><div class='docblock'><p>File to write milestones to, if any.</p>
-
 <p>Default: <code>&quot;./&lt;slug&gt;-milestones.json&quot;</code>.</p>
-</div><span id='structfield.out_projects' class="structfield">
-                           <span id='out_projects.v' class='invisible'>
+</div><span id="structfield.out_projects" class="structfield small-section-header">
+                           <a href="#structfield.out_projects" class="anchor field"></a>
+                           <span id="out_projects.v" class='invisible'>
                            <code>out_projects: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a>&gt;</code>
                            </span></span><div class='docblock'><p>File to write projects to, if any.</p>
-
 <p>Default: <code>&quot;./&lt;slug&gt;-projects.json&quot;</code>.</p>
-</div><span id='structfield.out_comments' class="structfield">
-                           <span id='out_comments.v' class='invisible'>
+</div><span id="structfield.out_comments" class="structfield small-section-header">
+                           <a href="#structfield.out_comments" class="anchor field"></a>
+                           <span id="out_comments.v" class='invisible'>
                            <code>out_comments: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">(</a><a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>, <a class="struct" href="https://doc.rust-lang.org/nightly/std/path/struct.PathBuf.html" title="struct std::path::PathBuf">PathBuf</a><a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.tuple.html">)</a>&gt;</code>
                            </span></span><div class='docblock'><p>Directory to write comments to, if any.</p>
-
 <p>Default: <code>&quot;./&lt;slug&gt;-comments/&quot;</code>.</p>
-</div><span id='structfield.compact' class="structfield">
-                           <span id='compact.v' class='invisible'>
+</div><span id="structfield.compact" class="structfield small-section-header">
+                           <a href="#structfield.compact" class="anchor field"></a>
+                           <span id="compact.v" class='invisible'>
                            <code>compact: <a class="primitive" href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a></code>
                            </span></span><div class='docblock'><p>Whether to compact-print, as opposed to pretty-print, exported JSON.</p>
-
 <p>Default: <code>false</code>.</p>
-</div><span id='structfield.github_token' class="structfield">
-                           <span id='github_token.v' class='invisible'>
+</div><span id="structfield.github_token" class="structfield small-section-header">
+                           <a href="#structfield.github_token" class="anchor field"></a>
+                           <span id="github_token.v" class='invisible'>
                            <code>github_token: <a class="enum" href="https://doc.rust-lang.org/nightly/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html" title="struct alloc::string::String">String</a>&gt;</code>
                            </span></span><div class='docblock'><p>GitHub OAuth2 token.</p>
-
 <p>Required for: projects.</p>
-
 <p>Default: <code>None</code>.</p>
 </div>
                     <h2 id='methods' class='small-section-header'>
                       Methods<a href='#methods' class='anchor'></a>
                     </h2>
                 <h3 id='impl' class='impl'><span class='in-band'><code>impl <a class="struct" href="../dumplingh/struct.Options.html" title="struct dumplingh::Options">Options</a></code><a href='#impl' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/dumplingh/options.rs.html#62-198' title='goto source code'>[src]</a></span></h3>
-<div class='impl-items'><h4 id='method.parse' class="method"><span id='parse.v' class='invisible'><code>fn <a href='#method.parse' class='fnname'>parse</a>() -&gt; <a class="struct" href="../dumplingh/struct.Options.html" title="struct dumplingh::Options">Options</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/dumplingh/options.rs.html#64-142' title='goto source code'>[src]</a></span></h4>
+<div class='impl-items'><h4 id='method.parse' class="method"><span id='parse.v' class='invisible'><code>pub fn <a href='#method.parse' class='fnname'>parse</a>() -&gt; <a class="struct" href="../dumplingh/struct.Options.html" title="struct dumplingh::Options">Options</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/dumplingh/options.rs.html#64-142' title='goto source code'>[src]</a></span></h4>
 <div class='docblock'><p>Parse <code>env</code>-wide command-line arguments into an <code>Options</code> instance</p>
 </div></div>
             <h2 id='implementations' class='small-section-header'>
@@ -128,7 +139,7 @@
             </h2>
         <h3 id='impl-Debug' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html" title="trait core::fmt::Debug">Debug</a> for <a class="struct" href="../dumplingh/struct.Options.html" title="struct dumplingh::Options">Options</a></code><a href='#impl-Debug' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/dumplingh/options.rs.html#22' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.fmt' class="method"><span id='fmt.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt' class='fnname'>fmt</a>(&amp;self, __arg_0: &amp;mut <a class="struct" href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html" title="struct core::fmt::Formatter">Formatter</a>) -&gt; <a class="type" href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html" title="type core::fmt::Result">Result</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/dumplingh/options.rs.html#22' title='goto source code'>[src]</a></span></h4>
-<div class='docblock'><p>Formats the value using the given formatter.</p>
+<div class='docblock'><p>Formats the value using the given formatter. <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html#tymethod.fmt">Read more</a></p>
 </div></div><h3 id='impl-Clone' class='impl'><span class='in-band'><code>impl <a class="trait" href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html" title="trait core::clone::Clone">Clone</a> for <a class="struct" href="../dumplingh/struct.Options.html" title="struct dumplingh::Options">Options</a></code><a href='#impl-Clone' class='anchor'></a></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/dumplingh/options.rs.html#22' title='goto source code'>[src]</a></span></h3>
 <div class='impl-items'><h4 id='method.clone' class="method"><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class="struct" href="../dumplingh/struct.Options.html" title="struct dumplingh::Options">Options</a></code></span><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/dumplingh/options.rs.html#22' title='goto source code'>[src]</a></span></h4>
 <div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
@@ -176,18 +187,22 @@
                 <h2>Keyboard Shortcuts</h2>
 
                 <dl>
-                    <dt>?</dt>
+                    <dt><kbd>?</kbd></dt>
                     <dd>Show this help dialog</dd>
-                    <dt>S</dt>
+                    <dt><kbd>S</kbd></dt>
                     <dd>Focus the search field</dd>
-                    <dt>&larrb;</dt>
+                    <dt><kbd>↑</kbd></dt>
                     <dd>Move up in search results</dd>
-                    <dt>&rarrb;</dt>
+                    <dt><kbd>↓</kbd></dt>
                     <dd>Move down in search results</dd>
-                    <dt>&#9166;</dt>
+                    <dt><kbd>↹</kbd></dt>
+                    <dd>Switch tab</dd>
+                    <dt><kbd>&#9166;</kbd></dt>
                     <dd>Go to active search result</dd>
-                    <dt>+</dt>
-                    <dd>Collapse/expand all sections</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
                 </dl>
             </div>
 

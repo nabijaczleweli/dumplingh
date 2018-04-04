@@ -4,14 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/mio-0.6.11/src/poll.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/mio-0.6.14/src/poll.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>poll.rs.html -- source</title>
 
     <link rel="stylesheet" type="text/css" href="../../normalize.css">
-    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../../main.css">
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle">
+    
+    <link rel="stylesheet" type="text/css" href="../../dark.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css" id="themeStyle">
+    <script src="../../storage.js"></script>
     
 
     
@@ -28,10 +31,18 @@
     
 
     <nav class="sidebar">
+        <div class="sidebar-menu">&#9776;</div>
         
         
     </nav>
 
+    <div class="theme-picker">
+        <button id="theme-picker" aria-label="Pick another theme!">
+            <img src="../../brush.svg" width="18" alt="Pick another theme!">
+        </button>
+        <div id="theme-choices"></div>
+    </div>
+    <script src="../../theme.js"></script>
     <nav class="sub">
         <form class="search-form js-only">
             <div class="search-container">
@@ -2736,6 +2747,46 @@
 <span id="2691">2691</span>
 <span id="2692">2692</span>
 <span id="2693">2693</span>
+<span id="2694">2694</span>
+<span id="2695">2695</span>
+<span id="2696">2696</span>
+<span id="2697">2697</span>
+<span id="2698">2698</span>
+<span id="2699">2699</span>
+<span id="2700">2700</span>
+<span id="2701">2701</span>
+<span id="2702">2702</span>
+<span id="2703">2703</span>
+<span id="2704">2704</span>
+<span id="2705">2705</span>
+<span id="2706">2706</span>
+<span id="2707">2707</span>
+<span id="2708">2708</span>
+<span id="2709">2709</span>
+<span id="2710">2710</span>
+<span id="2711">2711</span>
+<span id="2712">2712</span>
+<span id="2713">2713</span>
+<span id="2714">2714</span>
+<span id="2715">2715</span>
+<span id="2716">2716</span>
+<span id="2717">2717</span>
+<span id="2718">2718</span>
+<span id="2719">2719</span>
+<span id="2720">2720</span>
+<span id="2721">2721</span>
+<span id="2722">2722</span>
+<span id="2723">2723</span>
+<span id="2724">2724</span>
+<span id="2725">2725</span>
+<span id="2726">2726</span>
+<span id="2727">2727</span>
+<span id="2728">2728</span>
+<span id="2729">2729</span>
+<span id="2730">2730</span>
+<span id="2731">2731</span>
+<span id="2732">2732</span>
+<span id="2733">2733</span>
 </pre><pre class="rust ">
 <span class="kw">use</span> {<span class="ident">sys</span>, <span class="ident">Token</span>};
 <span class="kw">use</span> <span class="ident">event_imp</span>::{<span class="self">self</span> <span class="kw">as</span> <span class="ident">event</span>, <span class="ident">Ready</span>, <span class="ident">Event</span>, <span class="ident">Evented</span>, <span class="ident">PollOpt</span>};
@@ -2757,7 +2808,7 @@
 <span class="comment">// implemented in user space by `ReadinessQueue`. It provides a way to implement</span>
 <span class="comment">// purely user space `Evented` types.</span>
 <span class="comment">//</span>
-<span class="comment">// `ReadinessQueue` is is backed by a MPSC queue that supports reuse of linked</span>
+<span class="comment">// `ReadinessQueue` is backed by a MPSC queue that supports reuse of linked</span>
 <span class="comment">// list nodes. This significantly reduces the number of required allocations.</span>
 <span class="comment">// Each `Registration` / `SetReadiness` pair allocates a single readiness node</span>
 <span class="comment">// that is used for the lifetime of the registration.</span>
@@ -2991,8 +3042,8 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`readable`]: struct.Ready.html#method.readable</span>
 <span class="doccomment">/// [`writable`]: struct.Ready.html#method.writable</span>
-<span class="doccomment">/// [`error`]: struct.Ready.html#method.error</span>
-<span class="doccomment">/// [`hup`]: struct.Ready.html#method.hup</span>
+<span class="doccomment">/// [`error`]: unix/struct.UnixReady.html#method.error</span>
+<span class="doccomment">/// [`hup`]: unix/struct.UnixReady.html#method.hup</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ### Registering handles</span>
 <span class="doccomment">///</span>
@@ -3173,7 +3224,8 @@
 <span class="doccomment">/// [`set_readiness`]: struct.SetReadiness.html#method.set_readiness</span>
 <span class="doccomment">/// [`register`]: struct.Poll.html#method.register</span>
 <span class="doccomment">/// [`reregister`]: struct.Poll.html#method.reregister</span>
-<span class="doccomment">/// [`reregister`]: struct.Poll.html#method.reregister</span>
+<span class="doccomment">/// [`deregister`]: struct.Poll.html#method.deregister</span>
+<span class="doccomment">/// [portability]: struct.Poll.html#portability</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Registration</span> {
     <span class="ident">inner</span>: <span class="ident">RegistrationInner</span>,
 }
@@ -3674,7 +3726,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// `poll` returns the number of readiness events that have been pushed into</span>
     <span class="doccomment">/// `events` or `Err` when an error has been encountered with the system</span>
-    <span class="doccomment">/// selector.</span>
+    <span class="doccomment">/// selector.  The value returned is deprecated and will be removed in 0.7.0.</span>
+    <span class="doccomment">/// Accessing the events by index is also deprecated.  Events can be</span>
+    <span class="doccomment">/// inserted by other events triggering, thus making sequential access</span>
+    <span class="doccomment">/// problematic.  Use the iterator API instead.  See [`iter`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See the [struct] level documentation for a higher level discussion of</span>
     <span class="doccomment">/// polling.</span>
@@ -3682,6 +3737,7 @@
     <span class="doccomment">/// [`readable`]: struct.Ready.html#method.readable</span>
     <span class="doccomment">/// [`writable`]: struct.Ready.html#method.writable</span>
     <span class="doccomment">/// [struct]: #</span>
+    <span class="doccomment">/// [`iter`]: struct.Events.html#method.iter</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -3738,7 +3794,19 @@
     <span class="doccomment">/// ```</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [struct]: #</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">events</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Events</span>, <span class="kw-2">mut</span> <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">events</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Events</span>, <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">poll1</span>(<span class="ident">events</span>, <span class="ident">timeout</span>, <span class="bool-val">false</span>)
+    }
+
+    <span class="doccomment">/// Like `poll`, but may be interrupted by a signal</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If `poll` is inturrupted while blocking, it will transparently retry the syscall.  If you</span>
+    <span class="doccomment">/// want to handle signals yourself, however, use `poll_interruptible`.</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">poll_interruptible</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">events</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Events</span>, <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="self">self</span>.<span class="ident">poll1</span>(<span class="ident">events</span>, <span class="ident">timeout</span>, <span class="bool-val">true</span>)
+    }
+
+    <span class="kw">fn</span> <span class="ident">poll1</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">events</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Events</span>, <span class="kw-2">mut</span> <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>, <span class="ident">interruptible</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">zero</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">0</span>));
 
         <span class="comment">// At a high level, the synchronization strategy is to acquire access to</span>
@@ -3856,7 +3924,7 @@
             }
         }
 
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">poll2</span>(<span class="ident">events</span>, <span class="ident">timeout</span>);
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">poll2</span>(<span class="ident">events</span>, <span class="ident">timeout</span>, <span class="ident">interruptible</span>);
 
         <span class="comment">// Release the lock</span>
         <span class="kw">if</span> <span class="number">1</span> <span class="op">!=</span> <span class="self">self</span>.<span class="ident">lock_state</span>.<span class="ident">fetch_and</span>(<span class="op">!</span><span class="number">1</span>, <span class="ident">Release</span>) {
@@ -3871,39 +3939,55 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">poll2</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">events</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Events</span>, <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">poll2</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">events</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Events</span>, <span class="kw-2">mut</span> <span class="ident">timeout</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Duration</span><span class="op">&gt;</span>, <span class="ident">interruptible</span>: <span class="ident">bool</span>) <span class="op">-&gt;</span> <span class="ident">io</span>::<span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="comment">// Compute the timeout value passed to the system selector. If the</span>
         <span class="comment">// readiness queue has pending nodes, we still want to poll the system</span>
         <span class="comment">// selector for new events, but we don&#39;t want to block the thread to</span>
         <span class="comment">// wait for new events.</span>
-        <span class="kw">let</span> <span class="ident">timeout</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">timeout</span> <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">0</span>)) {
+        <span class="kw">if</span> <span class="ident">timeout</span> <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">0</span>)) {
             <span class="comment">// If blocking is not requested, then there is no need to prepare</span>
             <span class="comment">// the queue for sleep</span>
-            <span class="ident">timeout</span>
         } <span class="kw">else</span> <span class="kw">if</span> <span class="self">self</span>.<span class="ident">readiness_queue</span>.<span class="ident">prepare_for_sleep</span>() {
             <span class="comment">// The readiness queue is empty. The call to `prepare_for_sleep`</span>
             <span class="comment">// inserts `sleep_marker` into the queue. This signals to any</span>
             <span class="comment">// threads setting readiness that the `Poll::poll` is going to</span>
             <span class="comment">// sleep, so the awakener should be used.</span>
-            <span class="ident">timeout</span>
         } <span class="kw">else</span> {
             <span class="comment">// The readiness queue is not empty, so do not block the thread.</span>
-            <span class="prelude-val">Some</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">0</span>))
-        };
+            <span class="ident">timeout</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">Duration</span>::<span class="ident">from_millis</span>(<span class="number">0</span>));
+        }
 
-        <span class="comment">// First get selector events</span>
-        <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">selector</span>.<span class="ident">select</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">events</span>.<span class="ident">inner</span>, <span class="ident">AWAKEN</span>, <span class="ident">timeout</span>);
-
-        <span class="kw">if</span> <span class="ident">res</span><span class="question-mark">?</span> {
-            <span class="comment">// Some awakeners require reading from a FD.</span>
-            <span class="self">self</span>.<span class="ident">readiness_queue</span>.<span class="ident">inner</span>.<span class="ident">awakener</span>.<span class="ident">cleanup</span>();
+        <span class="kw">loop</span> {
+            <span class="kw">let</span> <span class="ident">now</span> <span class="op">=</span> <span class="ident">Instant</span>::<span class="ident">now</span>();
+            <span class="comment">// First get selector events</span>
+            <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">selector</span>.<span class="ident">select</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">events</span>.<span class="ident">inner</span>, <span class="ident">AWAKEN</span>, <span class="ident">timeout</span>);
+            <span class="kw">match</span> <span class="ident">res</span> {
+                <span class="prelude-val">Ok</span>(<span class="bool-val">true</span>) <span class="op">=&gt;</span> {
+                    <span class="comment">// Some awakeners require reading from a FD.</span>
+                    <span class="self">self</span>.<span class="ident">readiness_queue</span>.<span class="ident">inner</span>.<span class="ident">awakener</span>.<span class="ident">cleanup</span>();
+                    <span class="kw">break</span>;
+                }
+                <span class="prelude-val">Ok</span>(<span class="bool-val">false</span>) <span class="op">=&gt;</span> <span class="kw">break</span>,
+                <span class="prelude-val">Err</span>(<span class="kw-2">ref</span> <span class="ident">e</span>) <span class="kw">if</span> <span class="ident">e</span>.<span class="ident">kind</span>() <span class="op">==</span> <span class="ident">io</span>::<span class="ident">ErrorKind</span>::<span class="ident">Interrupted</span> <span class="op">&amp;&amp;</span> <span class="op">!</span><span class="ident">interruptible</span> <span class="op">=&gt;</span> {
+                    <span class="comment">// Interrupted by a signal; update timeout if necessary and retry</span>
+                    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">to</span>) <span class="op">=</span> <span class="ident">timeout</span> {
+                        <span class="kw">let</span> <span class="ident">elapsed</span> <span class="op">=</span> <span class="ident">now</span>.<span class="ident">elapsed</span>();
+                        <span class="kw">if</span> <span class="ident">elapsed</span> <span class="op">&gt;=</span> <span class="ident">to</span> {
+                            <span class="kw">break</span>;
+                        } <span class="kw">else</span> {
+                            <span class="ident">timeout</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">to</span> <span class="op">-</span> <span class="ident">elapsed</span>);
+                        }
+                    }
+                }
+                <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">e</span>),
+            }
         }
 
         <span class="comment">// Poll custom event queue</span>
         <span class="self">self</span>.<span class="ident">readiness_queue</span>.<span class="ident">poll</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">events</span>.<span class="ident">inner</span>);
 
         <span class="comment">// Return number of polled events</span>
-        <span class="prelude-val">Ok</span>(<span class="ident">events</span>.<span class="ident">len</span>())
+        <span class="prelude-val">Ok</span>(<span class="ident">events</span>.<span class="ident">inner</span>.<span class="ident">len</span>())
     }
 }
 
@@ -4064,49 +4148,14 @@
         }
     }
 
-    <span class="doccomment">/// Returns the `Event` at the given index, or `None` if the index is out of</span>
-    <span class="doccomment">/// bounds.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// # use std::error::Error;</span>
-    <span class="doccomment">/// # fn try_main() -&gt; Result&lt;(), Box&lt;Error&gt;&gt; {</span>
-    <span class="doccomment">/// use mio::{Events, Poll};</span>
-    <span class="doccomment">/// use std::time::Duration;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let mut events = Events::with_capacity(1024);</span>
-    <span class="doccomment">/// let poll = Poll::new()?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// // Register handles with `poll`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let n = poll.poll(&amp;mut events, Some(Duration::from_millis(100)))?;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// for i in 0..n {</span>
-    <span class="doccomment">///     println!(&quot;event={:?}&quot;, events.get(i).unwrap());</span>
-    <span class="doccomment">/// }</span>
-    <span class="doccomment">/// #     Ok(())</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// #</span>
-    <span class="doccomment">/// # fn main() {</span>
-    <span class="doccomment">/// #     try_main().unwrap();</span>
-    <span class="doccomment">/// # }</span>
-    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span><span class="op">=</span><span class="string">&quot;0.6.10&quot;</span>, <span class="ident">note</span><span class="op">=</span><span class="string">&quot;Index access removed in favor of iterator only API.&quot;</span>)]</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">idx</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">get</span>(<span class="ident">idx</span>)
     }
 
-    <span class="doccomment">/// Returns the number of `Event` values currently in `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Examples</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// use mio::Events;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// let events = Events::with_capacity(1024);</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// assert_eq!(0, events.len());</span>
-    <span class="doccomment">/// ```</span>
+    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
+    <span class="attribute">#[<span class="ident">deprecated</span>(<span class="ident">since</span><span class="op">=</span><span class="string">&quot;0.6.10&quot;</span>, <span class="ident">note</span><span class="op">=</span><span class="string">&quot;Index access removed in favor of iterator only API.&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">len</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">usize</span> {
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">len</span>()
     }
@@ -4172,6 +4221,39 @@
             <span class="ident">pos</span>: <span class="number">0</span>
         }
     }
+
+    <span class="doccomment">/// Clearing all `Event` values from container explicitly.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// # Examples</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// ```</span>
+    <span class="doccomment">/// # use std::error::Error;</span>
+    <span class="doccomment">/// # fn try_main() -&gt; Result&lt;(), Box&lt;Error&gt;&gt; {</span>
+    <span class="doccomment">/// use mio::{Events, Poll};</span>
+    <span class="doccomment">/// use std::time::Duration;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// let mut events = Events::with_capacity(1024);</span>
+    <span class="doccomment">/// let poll = Poll::new()?;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// // Register handles with `poll`</span>
+    <span class="doccomment">/// for _ in 0..2 {</span>
+    <span class="doccomment">///     events.clear();</span>
+    <span class="doccomment">///     poll.poll(&amp;mut events, Some(Duration::from_millis(100)))?;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///     for event in events.iter() {</span>
+    <span class="doccomment">///         println!(&quot;event={:?}&quot;, event);</span>
+    <span class="doccomment">///     }</span>
+    <span class="doccomment">/// }</span>
+    <span class="doccomment">/// #     Ok(())</span>
+    <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// #</span>
+    <span class="doccomment">/// # fn main() {</span>
+    <span class="doccomment">/// #     try_main().unwrap();</span>
+    <span class="doccomment">/// # }</span>
+    <span class="doccomment">/// ```</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clear</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) {
+        <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">clear</span>();
+    }
 }
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">IntoIterator</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Events</span> {
@@ -4187,7 +4269,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Event</span>;
 
     <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">get</span>(<span class="self">self</span>.<span class="ident">pos</span>);
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">inner</span>.<span class="ident">get</span>(<span class="self">self</span>.<span class="ident">pos</span>);
         <span class="self">self</span>.<span class="ident">pos</span> <span class="op">+=</span> <span class="number">1</span>;
         <span class="ident">ret</span>
     }
@@ -4209,7 +4291,7 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">Event</span>;
 
     <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Event</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">get</span>(<span class="self">self</span>.<span class="ident">pos</span>);
+        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">inner</span>.<span class="ident">get</span>(<span class="self">self</span>.<span class="ident">pos</span>);
         <span class="self">self</span>.<span class="ident">pos</span> <span class="op">+=</span> <span class="number">1</span>;
         <span class="ident">ret</span>
     }
@@ -4218,7 +4300,6 @@
 <span class="kw">impl</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Events</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Events&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;len&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">len</span>())
             .<span class="ident">field</span>(<span class="string">&quot;capacity&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">capacity</span>())
             .<span class="ident">finish</span>()
     }
@@ -4939,6 +5020,16 @@
             <span class="kw">return</span> <span class="bool-val">false</span>;
         }
 
+        <span class="comment">// The sleep marker is *not* currently in the readiness queue.</span>
+        <span class="comment">//</span>
+        <span class="comment">// The sleep marker is only inserted in this function. It is also only</span>
+        <span class="comment">// inserted in the tail position. This is guaranteed by first checking</span>
+        <span class="comment">// that the end marker is in the tail position, pushing the sleep marker</span>
+        <span class="comment">// after the end marker, then removing the end marker.</span>
+        <span class="comment">//</span>
+        <span class="comment">// Before inserting a node into the queue, the next pointer has to be</span>
+        <span class="comment">// set to null. Again, this is only safe to do when the node is not</span>
+        <span class="comment">// currently in the queue, but we already have ensured this.</span>
         <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">sleep_marker</span>.<span class="ident">next_readiness</span>.<span class="ident">store</span>(<span class="ident">ptr</span>::<span class="ident">null_mut</span>(), <span class="ident">Relaxed</span>);
 
         <span class="kw">let</span> <span class="ident">actual</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">head_readiness</span>.<span class="ident">compare_and_swap</span>(
@@ -5444,18 +5535,22 @@
                 <h2>Keyboard Shortcuts</h2>
 
                 <dl>
-                    <dt>?</dt>
+                    <dt><kbd>?</kbd></dt>
                     <dd>Show this help dialog</dd>
-                    <dt>S</dt>
+                    <dt><kbd>S</kbd></dt>
                     <dd>Focus the search field</dd>
-                    <dt>&larrb;</dt>
+                    <dt><kbd>↑</kbd></dt>
                     <dd>Move up in search results</dd>
-                    <dt>&rarrb;</dt>
+                    <dt><kbd>↓</kbd></dt>
                     <dd>Move down in search results</dd>
-                    <dt>&#9166;</dt>
+                    <dt><kbd>↹</kbd></dt>
+                    <dd>Switch tab</dd>
+                    <dt><kbd>&#9166;</kbd></dt>
                     <dd>Go to active search result</dd>
-                    <dt>+</dt>
-                    <dd>Collapse/expand all sections</dd>
+                    <dt><kbd>+</kbd></dt>
+                    <dd>Expand all sections</dd>
+                    <dt><kbd>-</kbd></dt>
+                    <dd>Collapse all sections</dd>
                 </dl>
             </div>
 
