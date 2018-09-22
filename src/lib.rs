@@ -30,7 +30,7 @@
 //! # dumplingh as аn executable
 //!
 //! This is just a very short synopsis of
-//! [the manpage](https://cdn.rawgit.com/nabijaczleweli/dumplingh/man/dumplingh.1.html),
+//! [the manpage](https://rawcdn.githack.com/nabijaczleweli/dumplingh/man/dumplingh.1.html),
 //! so consult that for more data.
 //!
 //! ## OPTIONS
