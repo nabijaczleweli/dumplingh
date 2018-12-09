@@ -1,60 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/slab-0.4.0/src/lib.rs`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang">
-
-    <title>lib.rs.html -- source</title>
-
-    <link rel="stylesheet" type="text/css" href="../../normalize.css">
-    <link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle">
-    
-    <link rel="stylesheet" type="text/css" href="../../dark.css">
-    <link rel="stylesheet" type="text/css" href="../../main.css" id="themeStyle">
-    <script src="../../storage.js"></script>
-    
-
-    
-    
-</head>
-<body class="rustdoc source">
-    <!--[if lte IE 8]>
-    <div class="warning">
-        This old browser is unsupported and will most likely display funky
-        things.
-    </div>
-    <![endif]-->
-
-    
-
-    <nav class="sidebar">
-        <div class="sidebar-menu">&#9776;</div>
-        
-        
-    </nav>
-
-    <div class="theme-picker">
-        <button id="theme-picker" aria-label="Pick another theme!">
-            <img src="../../brush.svg" width="18" alt="Pick another theme!">
-        </button>
-        <div id="theme-choices"></div>
-    </div>
-    <script src="../../theme.js"></script>
-    <nav class="sub">
-        <form class="search-form js-only">
-            <div class="search-container">
-                <input class="search-input" name="search"
-                       autocomplete="off"
-                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
-                       type="search">
-            </div>
-        </form>
-    </nav>
-
-    <section id='main' class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/slab-0.4.1/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css"><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script src="../../storage.js"></script></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><a id="settings-menu" href="../../settings.html"><img src="../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -960,6 +904,11 @@
 <span id="904">904</span>
 <span id="905">905</span>
 <span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
 </pre><pre class="rust ">
 <span class="doccomment">//! Pre-allocated storage for a uniform data type.</span>
 <span class="doccomment">//!</span>
@@ -1062,17 +1011,16 @@
 <span class="doccomment">//! [`Slab::with_capacity`]: struct.Slab.html#with_capacity</span>
 
 <span class="attribute">#![<span class="ident">deny</span>(<span class="ident">warnings</span>, <span class="ident">missing_docs</span>, <span class="ident">missing_debug_implementations</span>)]</span>
-<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_root_url</span> <span class="op">=</span> <span class="string">&quot;https://docs.rs/slab/0.4&quot;</span>)]</span>
+<span class="attribute">#![<span class="ident">doc</span>(<span class="ident">html_root_url</span> <span class="op">=</span> <span class="string">&quot;https://docs.rs/slab/0.4.1&quot;</span>)]</span>
 <span class="attribute">#![<span class="ident">crate_name</span> <span class="op">=</span> <span class="string">&quot;slab&quot;</span>]</span>
 
 <span class="kw">use</span> <span class="ident">std</span>::{<span class="ident">fmt</span>, <span class="ident">mem</span>};
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">iter</span>::<span class="ident">IntoIterator</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">ops</span>;
-<span class="kw">use</span> <span class="ident">std</span>::<span class="ident">marker</span>::<span class="ident">PhantomData</span>;
 
 <span class="doccomment">/// Pre-allocated storage for a uniform data type</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// See [module documentation] for more details.</span>
+<span class="doccomment">/// See the [module documentation] for more details.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// [module documentation]: index.html</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
@@ -1088,7 +1036,13 @@
     <span class="ident">next</span>: <span class="ident">usize</span>,
 }
 
-<span class="doccomment">/// A handle to an vacant entry in a `Slab`.</span>
+<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">Slab</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-&gt;</span> <span class="self">Self</span> {
+        <span class="ident">Slab</span>::<span class="ident">new</span>()
+    }
+}
+
+<span class="doccomment">/// A handle to a vacant entry in a `Slab`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `VacantEntry` allows constructing values with the key that they will be</span>
 <span class="doccomment">/// assigned to.</span>
@@ -1117,17 +1071,15 @@
 }
 
 <span class="doccomment">/// An iterator over the values stored in the `Slab`</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">slab</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">Slab</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+    <span class="ident">entries</span>: <span class="ident">std</span>::<span class="ident">slice</span>::<span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Entry</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>,
     <span class="ident">curr</span>: <span class="ident">usize</span>,
 }
 
 <span class="doccomment">/// A mutable iterator over the values stored in the `Slab`</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
-    <span class="ident">slab</span>: <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Slab</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+    <span class="ident">entries</span>: <span class="ident">std</span>::<span class="ident">slice</span>::<span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Entry</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;&gt;</span>,
     <span class="ident">curr</span>: <span class="ident">usize</span>,
-    <span class="ident">_marker</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> ()<span class="op">&gt;</span>,
 }
 
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>)]</span>
@@ -1187,7 +1139,7 @@
         }
     }
 
-    <span class="doccomment">/// Returns the number of values the slab can store without reallocating.</span>
+    <span class="doccomment">/// Return the number of values the slab can store without reallocating.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -1200,10 +1152,10 @@
         <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">capacity</span>()
     }
 
-    <span class="doccomment">/// Reserves capacity for at least `additional` more values to be stored</span>
+    <span class="doccomment">/// Reserve capacity for at least `additional` more values to be stored</span>
     <span class="doccomment">/// without allocating.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// `reserve` does nothing if the slab already has sufficient capcity for</span>
+    <span class="doccomment">/// `reserve` does nothing if the slab already has sufficient capacity for</span>
     <span class="doccomment">/// `additional` more values. If more capacity is required, a new segment of</span>
     <span class="doccomment">/// memory will be allocated and all existing values will be copied into it.</span>
     <span class="doccomment">/// As such, if the slab is already very large, a call to `reserve` can end</span>
@@ -1227,16 +1179,14 @@
     <span class="doccomment">/// assert!(slab.capacity() &gt;= 11);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) {
-        <span class="kw">let</span> <span class="ident">available</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="self">self</span>.<span class="ident">len</span>;
-
-        <span class="kw">if</span> <span class="ident">available</span> <span class="op">&gt;=</span> <span class="ident">additional</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">capacity</span>() <span class="op">-</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">&gt;=</span> <span class="ident">additional</span> {
             <span class="kw">return</span>;
         }
-
-        <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">reserve</span>(<span class="ident">additional</span> <span class="op">-</span> <span class="ident">available</span>);
+        <span class="kw">let</span> <span class="ident">need_add</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">+</span> <span class="ident">additional</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">len</span>();
+        <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">reserve</span>(<span class="ident">need_add</span>);
     }
 
-    <span class="doccomment">/// Reserves the minimum capacity required to store exactly `additional`</span>
+    <span class="doccomment">/// Reserve the minimum capacity required to store exactly `additional`</span>
     <span class="doccomment">/// more values.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// `reserve_exact` does nothing if the slab already has sufficient capacity</span>
@@ -1263,16 +1213,14 @@
     <span class="doccomment">/// assert!(slab.capacity() &gt;= 11);</span>
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">reserve_exact</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">additional</span>: <span class="ident">usize</span>) {
-        <span class="kw">let</span> <span class="ident">available</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="self">self</span>.<span class="ident">len</span>;
-
-        <span class="kw">if</span> <span class="ident">available</span> <span class="op">&gt;=</span> <span class="ident">additional</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">capacity</span>() <span class="op">-</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">&gt;=</span> <span class="ident">additional</span> {
             <span class="kw">return</span>;
         }
-
-        <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">reserve_exact</span>(<span class="ident">additional</span> <span class="op">-</span> <span class="ident">available</span>);
+        <span class="kw">let</span> <span class="ident">need_add</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">len</span> <span class="op">+</span> <span class="ident">additional</span> <span class="op">-</span> <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">len</span>();
+        <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">reserve_exact</span>(<span class="ident">need_add</span>);
     }
 
-    <span class="doccomment">/// Shrinks the capacity of the slab as much as possible.</span>
+    <span class="doccomment">/// Shrink the capacity of the slab as much as possible.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// It will drop down as close as possible to the length but the allocator</span>
     <span class="doccomment">/// may still inform the vector that there is space for a few more elements.</span>
@@ -1316,7 +1264,7 @@
         <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">shrink_to_fit</span>();
     }
 
-    <span class="doccomment">/// Clear the slab of all values</span>
+    <span class="doccomment">/// Clear the slab of all values.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -1337,7 +1285,7 @@
         <span class="self">self</span>.<span class="ident">next</span> <span class="op">=</span> <span class="number">0</span>;
     }
 
-    <span class="doccomment">/// Returns the number of stored values</span>
+    <span class="doccomment">/// Return the number of stored values.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -1355,7 +1303,7 @@
         <span class="self">self</span>.<span class="ident">len</span>
     }
 
-    <span class="doccomment">/// Returns `true` if no values are stored in the slab</span>
+    <span class="doccomment">/// Return `true` if there are no values stored in the slab.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -1371,11 +1319,11 @@
         <span class="self">self</span>.<span class="ident">len</span> <span class="op">==</span> <span class="number">0</span>
     }
 
-    <span class="doccomment">/// Returns an iterator over the slab</span>
+    <span class="doccomment">/// Return an iterator over the slab.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function should generally be **avoided** as it is not efficient.</span>
     <span class="doccomment">/// Iterators must iterate over every slot in the slab even if it is</span>
-    <span class="doccomment">/// vaccant. As such, a slab with a capacity of 1 million but only one</span>
+    <span class="doccomment">/// vacant. As such, a slab with a capacity of 1 million but only one</span>
     <span class="doccomment">/// stored value must still iterate the million slots.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
@@ -1397,16 +1345,16 @@
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">Iter</span> {
-            <span class="ident">slab</span>: <span class="self">self</span>,
+            <span class="ident">entries</span>: <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">iter</span>(),
             <span class="ident">curr</span>: <span class="number">0</span>,
         }
     }
 
-    <span class="doccomment">/// Returns an iterator that allows modifying each value.</span>
+    <span class="doccomment">/// Return an iterator that allows modifying each value.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function should generally be **avoided** as it is not efficient.</span>
     <span class="doccomment">/// Iterators must iterate over every slot in the slab even if it is</span>
-    <span class="doccomment">/// vaccant. As such, a slab with a capacity of 1 million but only one</span>
+    <span class="doccomment">/// vacant. As such, a slab with a capacity of 1 million but only one</span>
     <span class="doccomment">/// stored value must still iterate the million slots.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
@@ -1429,13 +1377,12 @@
     <span class="doccomment">/// ```</span>
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">iter_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="ident">IterMut</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="ident">IterMut</span> {
-            <span class="ident">slab</span>: <span class="self">self</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="ident">Slab</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+            <span class="ident">entries</span>: <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">iter_mut</span>(),
             <span class="ident">curr</span>: <span class="number">0</span>,
-            <span class="ident">_marker</span>: <span class="ident">PhantomData</span>,
         }
     }
 
-    <span class="doccomment">/// Returns a reference to the value associated with the given key</span>
+    <span class="doccomment">/// Return a reference to the value associated with the given key.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the given key is not associated with a value, then `None` is</span>
     <span class="doccomment">/// returned.</span>
@@ -1453,11 +1400,11 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">get</span>(<span class="ident">key</span>) {
             <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="ident">val</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">val</span>),
-            _ <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
         }
     }
 
-    <span class="doccomment">/// Returns a mutable reference to the value associated with the given key</span>
+    <span class="doccomment">/// Return a mutable reference to the value associated with the given key.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the given key is not associated with a value, then `None` is</span>
     <span class="doccomment">/// returned.</span>
@@ -1477,11 +1424,11 @@
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">get_mut</span>(<span class="ident">key</span>) {
             <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">val</span>)) <span class="op">=&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">val</span>),
-            _ <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="prelude-val">None</span>,
         }
     }
 
-    <span class="doccomment">/// Returns a reference to the value associated with the given key without</span>
+    <span class="doccomment">/// Return a reference to the value associated with the given key without</span>
     <span class="doccomment">/// performing bounds checking.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function should be used with care.</span>
@@ -1500,11 +1447,11 @@
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">T</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">get_unchecked</span>(<span class="ident">key</span>) {
             <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="ident">val</span>) <span class="op">=&gt;</span> <span class="ident">val</span>,
-            _ <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
         }
     }
 
-    <span class="doccomment">/// Returns a mutable reference to the value associated with the given key</span>
+    <span class="doccomment">/// Return a mutable reference to the value associated with the given key</span>
     <span class="doccomment">/// without performing bounds checking.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function should be used with care.</span>
@@ -1526,11 +1473,11 @@
     <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_unchecked_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">get_unchecked_mut</span>(<span class="ident">key</span>) {
             <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">val</span>) <span class="op">=&gt;</span> <span class="ident">val</span>,
-            _ <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
         }
     }
 
-    <span class="doccomment">/// Insert a value in the slab, returning key assigned to the value</span>
+    <span class="doccomment">/// Insert a value in the slab, returning key assigned to the value.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The returned key can later be used to retrieve or remove the value using indexed</span>
     <span class="doccomment">/// lookup and `remove`. Additional capacity is allocated if needed. See</span>
@@ -1556,10 +1503,10 @@
         <span class="ident">key</span>
     }
 
-    <span class="doccomment">/// Returns a handle to a vacant entry allowing for further manipulation.</span>
+    <span class="doccomment">/// Return a handle to a vacant entry allowing for further manipulation.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This function is useful when creating values that must contain their</span>
-    <span class="doccomment">/// slab key. The returned `VaccantEntry` reserves a slot in the slab and is</span>
+    <span class="doccomment">/// slab key. The returned `VacantEntry` reserves a slot in the slab and is</span>
     <span class="doccomment">/// able to query the associated key.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
@@ -1601,12 +1548,12 @@
                 <span class="ident">Entry</span>::<span class="ident">Vacant</span>(<span class="ident">next</span>) <span class="op">=&gt;</span> {
                     <span class="self">self</span>.<span class="ident">next</span> <span class="op">=</span> <span class="ident">next</span>;
                 }
-                _ <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
             }
         }
     }
 
-    <span class="doccomment">/// Removes and returns the value associated with the given key.</span>
+    <span class="doccomment">/// Remove and return the value associated with the given key.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The key is then released and may be associated with future stored</span>
     <span class="doccomment">/// values.</span>
@@ -1638,7 +1585,7 @@
                 <span class="self">self</span>.<span class="ident">next</span> <span class="op">=</span> <span class="ident">key</span>;
                 <span class="ident">val</span>
             }
-            _ <span class="op">=&gt;</span> {
+            <span class="kw">_</span> <span class="op">=&gt;</span> {
                 <span class="comment">// Woops, the entry is actually vacant, restore the state</span>
                 <span class="self">self</span>.<span class="ident">entries</span>[<span class="ident">key</span>] <span class="op">=</span> <span class="ident">prev</span>;
                 <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;invalid key&quot;</span>);
@@ -1646,7 +1593,7 @@
         }
     }
 
-    <span class="doccomment">/// Returns `true` if a value is associated with the given key.</span>
+    <span class="doccomment">/// Return `true` if a value is associated with the given key.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// # Examples</span>
     <span class="doccomment">///</span>
@@ -1665,8 +1612,8 @@
         <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">get</span>(<span class="ident">key</span>)
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">e</span> {
-                    <span class="ident">Entry</span>::<span class="ident">Occupied</span>(_) <span class="op">=&gt;</span> <span class="bool-val">true</span>,
-                    _ <span class="op">=&gt;</span> <span class="bool-val">false</span>,
+                    <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw">_</span>) <span class="op">=&gt;</span> <span class="bool-val">true</span>,
+                    <span class="kw">_</span> <span class="op">=&gt;</span> <span class="bool-val">false</span>,
                 }
             })
             .<span class="ident">unwrap_or</span>(<span class="bool-val">false</span>)
@@ -1702,7 +1649,7 @@
         <span class="kw">for</span> <span class="ident">i</span> <span class="kw">in</span> <span class="number">0</span>..<span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">len</span>() {
             <span class="kw">let</span> <span class="ident">keep</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">entries</span>[<span class="ident">i</span>] {
                 <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">v</span>) <span class="op">=&gt;</span> <span class="ident">f</span>(<span class="ident">i</span>, <span class="ident">v</span>),
-                _ <span class="op">=&gt;</span> <span class="bool-val">true</span>,
+                <span class="kw">_</span> <span class="op">=&gt;</span> <span class="bool-val">true</span>,
             };
 
             <span class="kw">if</span> <span class="op">!</span><span class="ident">keep</span> {
@@ -1718,7 +1665,7 @@
     <span class="kw">fn</span> <span class="ident">index</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="ident">T</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">entries</span>[<span class="ident">key</span>] {
             <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="ident">v</span>) <span class="op">=&gt;</span> <span class="ident">v</span>,
-            _ <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;invalid key&quot;</span>),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;invalid key&quot;</span>),
         }
     }
 }
@@ -1727,7 +1674,7 @@
     <span class="kw">fn</span> <span class="ident">index_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">key</span>: <span class="ident">usize</span>) <span class="op">-&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">T</span> {
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">entries</span>[<span class="ident">key</span>] {
             <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">v</span>) <span class="op">=&gt;</span> <span class="ident">v</span>,
-            _ <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;invalid key&quot;</span>),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">panic</span><span class="macro">!</span>(<span class="string">&quot;invalid key&quot;</span>),
         }
     }
 }
@@ -1759,11 +1706,20 @@
     }
 }
 
+<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Iter</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
+        <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;Iter&quot;</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;curr&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">curr</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;remaining&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">len</span>())
+            .<span class="ident">finish</span>()
+    }
+}
+
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span>: <span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">fmt</span>::<span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">IterMut</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">T</span><span class="op">&gt;</span> <span class="kw">where</span> <span class="ident">T</span>: <span class="ident">fmt</span>::<span class="ident">Debug</span> {
     <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">fmt</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">fmt</span>::<span class="ident">Formatter</span>) <span class="op">-&gt;</span> <span class="ident">fmt</span>::<span class="prelude-ty">Result</span> {
         <span class="ident">fmt</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;IterMut&quot;</span>)
-            .<span class="ident">field</span>(<span class="string">&quot;slab&quot;</span>, <span class="kw">unsafe</span> { <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="self">self</span>.<span class="ident">slab</span> })
             .<span class="ident">field</span>(<span class="string">&quot;curr&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">curr</span>)
+            .<span class="ident">field</span>(<span class="string">&quot;remaining&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">len</span>())
             .<span class="ident">finish</span>()
     }
 }
@@ -1798,7 +1754,7 @@
 
         <span class="kw">match</span> <span class="self">self</span>.<span class="ident">slab</span>.<span class="ident">entries</span>[<span class="self">self</span>.<span class="ident">key</span>] {
             <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">v</span>) <span class="op">=&gt;</span> <span class="ident">v</span>,
-            _ <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
+            <span class="kw">_</span> <span class="op">=&gt;</span> <span class="macro">unreachable</span><span class="macro">!</span>(),
         }
     }
 
@@ -1834,11 +1790,11 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>);
 
     <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">T</span>)<span class="op">&gt;</span> {
-        <span class="kw">while</span> <span class="self">self</span>.<span class="ident">curr</span> <span class="op">&lt;</span> <span class="self">self</span>.<span class="ident">slab</span>.<span class="ident">entries</span>.<span class="ident">len</span>() {
+        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">entry</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">next</span>() {
             <span class="kw">let</span> <span class="ident">curr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">curr</span>;
             <span class="self">self</span>.<span class="ident">curr</span> <span class="op">+=</span> <span class="number">1</span>;
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="ident">v</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">slab</span>.<span class="ident">entries</span>[<span class="ident">curr</span>] {
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="ident">v</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">entry</span> {
                 <span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="ident">curr</span>, <span class="ident">v</span>));
             }
         }
@@ -1853,83 +1809,17 @@
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> (<span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>);
 
     <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">T</span>)<span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">while</span> <span class="self">self</span>.<span class="ident">curr</span> <span class="op">&lt;</span> (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">slab</span>).<span class="ident">entries</span>.<span class="ident">len</span>() {
-                <span class="kw">let</span> <span class="ident">curr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">curr</span>;
-                <span class="self">self</span>.<span class="ident">curr</span> <span class="op">+=</span> <span class="number">1</span>;
+        <span class="kw">while</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">entry</span>) <span class="op">=</span> <span class="self">self</span>.<span class="ident">entries</span>.<span class="ident">next</span>() {
+            <span class="kw">let</span> <span class="ident">curr</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">curr</span>;
+            <span class="self">self</span>.<span class="ident">curr</span> <span class="op">+=</span> <span class="number">1</span>;
 
-                <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">v</span>) <span class="op">=</span> (<span class="kw-2">*</span><span class="self">self</span>.<span class="ident">slab</span>).<span class="ident">entries</span>[<span class="ident">curr</span>] {
-                    <span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="ident">curr</span>, <span class="ident">v</span>));
-                }
+            <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Entry</span>::<span class="ident">Occupied</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">v</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">entry</span> {
+                <span class="kw">return</span> <span class="prelude-val">Some</span>((<span class="ident">curr</span>, <span class="ident">v</span>));
             }
-
-            <span class="prelude-val">None</span>
         }
+
+        <span class="prelude-val">None</span>
     }
 }
 </pre>
-</section>
-    <section id='search' class="content hidden"></section>
-
-    <section class="footer"></section>
-
-    <aside id="help" class="hidden">
-        <div>
-            <h1 class="hidden">Help</h1>
-
-            <div class="shortcuts">
-                <h2>Keyboard Shortcuts</h2>
-
-                <dl>
-                    <dt><kbd>?</kbd></dt>
-                    <dd>Show this help dialog</dd>
-                    <dt><kbd>S</kbd></dt>
-                    <dd>Focus the search field</dd>
-                    <dt><kbd>↑</kbd></dt>
-                    <dd>Move up in search results</dd>
-                    <dt><kbd>↓</kbd></dt>
-                    <dd>Move down in search results</dd>
-                    <dt><kbd>↹</kbd></dt>
-                    <dd>Switch tab</dd>
-                    <dt><kbd>&#9166;</kbd></dt>
-                    <dd>Go to active search result</dd>
-                    <dt><kbd>+</kbd></dt>
-                    <dd>Expand all sections</dd>
-                    <dt><kbd>-</kbd></dt>
-                    <dd>Collapse all sections</dd>
-                </dl>
-            </div>
-
-            <div class="infos">
-                <h2>Search Tricks</h2>
-
-                <p>
-                    Prefix searches with a type followed by a colon (e.g.
-                    <code>fn:</code>) to restrict the search to a given type.
-                </p>
-
-                <p>
-                    Accepted types are: <code>fn</code>, <code>mod</code>,
-                    <code>struct</code>, <code>enum</code>,
-                    <code>trait</code>, <code>type</code>, <code>macro</code>,
-                    and <code>const</code>.
-                </p>
-
-                <p>
-                    Search functions by type signature (e.g.
-                    <code>vec -> usize</code> or <code>* -> vec</code>)
-                </p>
-            </div>
-        </div>
-    </aside>
-
-    
-
-    <script>
-        window.rootPath = "../../";
-        window.currentCrate = "slab";
-    </script>
-    <script src="../../main.js"></script>
-    <script defer src="../../search-index.js"></script>
-</body>
-</html>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g. <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g. <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g. <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../";window.currentCrate = "slab";</script><script src="../../aliases.js"></script><script src="../../main.js"></script><script defer src="../../search-index.js"></script></body></html>
